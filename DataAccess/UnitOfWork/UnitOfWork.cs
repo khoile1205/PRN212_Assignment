@@ -24,12 +24,6 @@ namespace DataAccess.UnitOfWork
             this.dbContext = dbContext;
         }
 
-        //public Repository<User> Users => _userRepository ??= new Repository<User>(dbContext);
-        //public Repository<Role> Roles => _roleRepository ??= new Repository<Role>(dbContext);
-        //public Repository<UserOrder> UserOrders => _userOrderRepository ??= new Repository<UserOrder>(dbContext);
-        //public Repository<Order> Orders => _orderRepository ??= new Repository<Order>(dbContext);
-        //public Repository<Product> Products => _productRepository ??= new Repository<Product>(dbContext);
-
         public IRepository<User> Users => _userRepository ??= new Repository<User>(dbContext);
         public IRepository<Role> Roles => _roleRepository ??= new Repository<Role>(dbContext);
         public IRepository<UserOrder> UserOrders => _userOrderRepository ??= new Repository<UserOrder>(dbContext);
