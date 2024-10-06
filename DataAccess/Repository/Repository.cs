@@ -78,27 +78,28 @@ namespace DataAccess.Repository
             return query.ToList();
 
         }
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public async Task<T?> GetFirstOrDefault(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>> include = null)
         {
-            IQueryable<T> query = dbSet;
             try
             {
-                query = query.Where(filter);
-                if (includeProperties != null)
+                IQueryable<T> query = context.Set<T>();
+
+                if (include != null)
                 {
-                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        query = query.Include(includeProp);
-                    }
+                    query = include(query);
                 }
+
+                return await query.FirstOrDefaultAsync(predicate);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+                // Handle the exception (log it or rethrow a specific exception)
+                // For example, log the error:
+                Console.WriteLine($"An error occurred: {ex.Message}");
 
-            return query.FirstOrDefault();
+                // You might want to throw a custom exception or return default
+                throw new Exception("An error occurred while retrieving the data.", ex);
+            }
         }
 
         public T Update(T _object)
