@@ -11,50 +11,32 @@
         DataContext="{Binding LoginPageViewModel, Source={StaticResource Locator}}"
        >
     <Grid Background="White">
-        <Rectangle HorizontalAlignment="Left" Height="434" VerticalAlignment="Center" Width="400" Fill="#FF19B5B9"/>
-        <TextBox x:Name="input_username" HorizontalAlignment="Left" Margin="455,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="242" Height="25" Background="#FFE8AFAF" Text="{Binding UserName}">
-            <TextBox.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </TextBox.RenderTransform>
-        </TextBox>
-        <Label x:Name="lbl_username" Content="User name" HorizontalAlignment="Left" Margin="455,116,0,0" VerticalAlignment="Top" Height="29" Width="83">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Label x:Name="lbl_password" Content="Password" HorizontalAlignment="Left" Margin="455,201,0,0" VerticalAlignment="Top" Height="29" Width="74">
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
-        </Label>
-        <Button x:Name="btn_login" Content="Login" HorizontalAlignment="Left" Margin="530,295,0,0" VerticalAlignment="Top" Width="92" Height="39" Command="{Binding LoginCommand}">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-        <Label Content="Don't have an account ?" HorizontalAlignment="Left" Margin="137,313,0,0" VerticalAlignment="Top"/>
-        <Label Content="Click here" HorizontalAlignment="Left" Margin="107,337,0,0" VerticalAlignment="Top" Cursor="AppStarting"/>
-        <Label Content="to register new account" HorizontalAlignment="Left" Margin="167,337,0,0" VerticalAlignment="Top" Width="152" Foreground="#FFFFF7F7" FontWeight="Bold" Cursor="AppStarting"/>
-        <PasswordBox local:PasswordBoxBehavior.BindablePassword="{Binding Password, Mode=TwoWay}"  HorizontalAlignment="Left" Margin="455,230,0,0" VerticalAlignment="Top" Width="242" Background="#FFD05353" x:Name="passwordBox" />
+        <!-- Left Panel with Rectangle and Registration Text -->
+        <Grid HorizontalAlignment="Left" Width="400" VerticalAlignment="Center">
+            <Rectangle Fill="#FF066364" Height="434" VerticalAlignment="Center"/>
+            <StackPanel VerticalAlignment="Bottom" Margin="20" HorizontalAlignment="Center" >
+                <Label Content="Don't have an account ?" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5" FontSize="15"/>
+                <Button Content="REGISTER" BorderBrush="White" BorderThickness="2" Foreground="White" Width="300" Command="{Binding OpenRegisterCommand}"></Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Right Panel with Form Fields and Login Button -->
+        <StackPanel HorizontalAlignment="Left" Margin="455,0,0,0" VerticalAlignment="Center" Width="Auto" Height="Auto">
+            <TextBlock Text="SIGN IN" FontSize="14" FontWeight="Bold" Margin="0,0,0,20"/>
+
+            <!-- Username Field -->
+            <Label Content="Username:" FontWeight="Bold" />
+            <TextBox Text="{Binding UserName}" Width="240" Height="25" Background="White" BorderBrush="Black" />
+
+            <!-- Password Field -->
+            <Label Content="Password:" FontWeight="Bold" Margin="0,10,0,0"/>
+            <PasswordBox local:PasswordBoxBehavior.BindablePassword="{Binding Password, Mode=TwoWay}" Width="240" Height="25" BorderBrush="Black" CaretBrush="Black" SelectionBrush="White"/>
+
+            <!-- Show Password Checkbox -->
+            <CheckBox Content="Show Password" FontWeight="Bold" ClickMode="Press" Margin="0,10,0,0"/>
+
+            <!-- Login Button -->
+            <Button x:Name="btn_login" Content="LOGIN" Width="92" Height="30" Command="{Binding LoginCommand}" Background="#FF066364" Foreground="White" Margin="0,20,0,0"/>
+        </StackPanel>
     </Grid>
 </Window>

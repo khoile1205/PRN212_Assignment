@@ -9,6 +9,8 @@ namespace Service.Mapper
         public UserAutoMapper()
         {
             CreateMap<UserDto, User>().ReverseMap();
+            CreateMap<SignUpDto, User>().ReverseMap();
+
         }
     }
 }

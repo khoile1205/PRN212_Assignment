@@ -15,6 +15,8 @@ namespace Service.Services
 {
     public class AuthService : IAuthService
     {
+        private UserDto _currentUser;
+
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly IMapper _mapper;
@@ -27,6 +29,7 @@ namespace Service.Services
 
         public async Task<UserDto?> login(LoginDto loginDto)
         {
+
             User account = await _unitOfWork.Users
                 .GetFirstOrDefault(predicate: u => u.Username == loginDto.Username && u.Password == loginDto.Password,
                                    include: u => u.Include(x => x.Role));
@@ -36,8 +39,41 @@ namespace Service.Services
                 return null;
             }
 
-            return _mapper.Map<UserDto>(account);
+            UserDto userData = _mapper.Map<UserDto>(account);
+            _currentUser = userData;
 
+            return userData;
+
+        }
+
+        public async Task<bool> signUp(SignUpDto signUpDto)
+        {
+            if (string.IsNullOrWhiteSpace(signUpDto.Username) || string.IsNullOrWhiteSpace(signUpDto.Password) || string.IsNullOrWhiteSpace(signUpDto.ConfirmPassword))
+            {
+                return false; // or throw an exception for invalid input
+            }
+
+            if (!signUpDto.Password.Equals(signUpDto.ConfirmPassword))
+            {
+                return false;
+            }
+
+            var existingUser = await _unitOfWork.Users.GetFirstOrDefault(u => u.Username == signUpDto.Username);
+            if (existingUser != null)
+            {
+                return false; // User already exists
+            }
+
+            var roles = await _unitOfWork.Roles.GetFirstOrDefault(r => r.Name == "Customer"); 
+            var newUser = _mapper.Map<User>(signUpDto);
+
+            newUser.Password = signUpDto.Password;
+            newUser.RoleId = roles?.Id ?? 1;
+
+            _unitOfWork.Users.Add(newUser);
+            _unitOfWork.Save();
+
+            return true;
         }
     }
 }

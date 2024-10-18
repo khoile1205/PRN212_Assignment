@@ -1,11 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Service.DI;
+using Service.Services.Abstraction;
+using Service.Services;
 using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Windows;
+using WpfApp.Admin;
 using WpfApp.Login;
+using WpfApp.Dialog;
+using WpfApp.Register;
 
 namespace WpfApp
 {
@@ -30,6 +35,7 @@ namespace WpfApp
 
             var serviceCollection = new ServiceCollection();
             // Register ViewModels and Views
+            RegistryPageView(serviceCollection);
             RegistryServiceViewModel(serviceCollection);
             // Configure additional services (likely located in Service.DI)
             DependencyInjection.ConfigureServices(serviceCollection, Configuration);
@@ -41,19 +47,25 @@ namespace WpfApp
             OnInitializeScreen();
         }
 
+        private void RegistryPageView(ServiceCollection service)
+        {
+            service.AddSingleton<IDialogService, DialogService>();
+
+            service.AddTransient<LoginPage>();
+            service.AddTransient<MainAdminWindows>();
+            service.AddTransient<RegisterWindow>();
+        }
         private void RegistryServiceViewModel(ServiceCollection service)
         {
             service.AddTransient<LoginPageViewModel>();
-            service.AddTransient<LoginPage>();
+            service.AddTransient<MainAdminWindowsViewModel>();
+            service.AddTransient<RegisterWindowViewModel>();
         }
 
         private void OnInitializeScreen()
         {
-            var loginPage = ServiceProvider.GetRequiredService<LoginPage>();
-            var loginViewModel = ServiceProvider.GetRequiredService<LoginPageViewModel>();
-            loginPage.DataContext = loginViewModel;
-
-            loginPage.Show();
+            var dialogService = ServiceProvider.GetRequiredService<IDialogService>();
+            dialogService.ShowDialog<LoginPage>();
         }
     }
 

@@ -10,5 +10,7 @@ namespace Service.Services.Abstraction
     public interface IAuthService
     {
         Task<UserDto> login(LoginDto loginDto);
+
+        Task<bool> signUp(SignUpDto signUpDto);
     }
 }

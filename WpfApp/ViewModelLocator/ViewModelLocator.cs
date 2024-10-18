@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfApp.Admin;
 using WpfApp.Login;
+using WpfApp.Register;
 
 namespace WpfApp
 {
@@ -19,6 +21,10 @@ namespace WpfApp
         }
 
         public LoginPageViewModel LoginPageViewModel => ServiceProvider.GetRequiredService<LoginPageViewModel>();
+        public MainAdminWindowsViewModel MainAdminWindowsViewModel => ServiceProvider.GetRequiredService<MainAdminWindowsViewModel>();
+        public RegisterWindowViewModel RegisterWindowViewModel => ServiceProvider.GetRequiredService<RegisterWindowViewModel>();
+
+
 
     }
 }

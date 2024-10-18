@@ -1,7 +1,8 @@
 ﻿using Core.Command;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Service.DTO;
-using Service.Services.Abstraction;
+using WpfApp.Dialog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,12 +11,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using WpfApp.Admin;
+using Service.Services.Abstraction;
+using WpfApp.Register;
 
 namespace WpfApp.Login
 {
     public class LoginPageViewModel : INotifyPropertyChanged
     {
         private readonly IAuthService _authService;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IDialogService _dialogService;
+
         private string _username;
         private string _password;
         private string _errorMessage;
@@ -49,10 +56,14 @@ namespace WpfApp.Login
         }
 
         public ICommand LoginCommand { get; }
-        public LoginPageViewModel(IAuthService authService)
+        public ICommand OpenRegisterCommand { get; }
+        public LoginPageViewModel(IAuthService authService, IServiceProvider serviceProvider, IDialogService dialogService)
         {
-            _authService = authService;
+            this._authService = authService;
+            this._serviceProvider = serviceProvider;
+            this._dialogService = dialogService;
             LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
+            OpenRegisterCommand = new RelayCommand(ExecuteRegister);
         }
 
         private async void ExecuteLogin(object obj)
@@ -60,22 +71,28 @@ namespace WpfApp.Login
             LoginDto loginDto = new LoginDto();
             loginDto.Username = _username;
             loginDto.Password = _password;
+
             UserDto user = await _authService.login(loginDto);
             if (user != null)
             {
-                MessageBox.Show(user.Id.ToString());
+                _dialogService.ShowDialog<MainAdminWindows>(); // Show the AdminPage
+                _dialogService.CloseDialog<LoginPage>();
             }
             else
             {
                 MessageBox.Show("Not pass");
-
             }
         }
 
         private bool CanExecuteLogin(object obj)
         {
-            //return (!_username.IsNullOrEmpty() && !_password.IsNullOrEmpty());
             return true;
+        }
+
+        public void ExecuteRegister(object obj)
+        {
+            _dialogService.ShowDialog<RegisterWindow>(); // Show the AdminPage
+            _dialogService.CloseDialog<LoginPage>();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
