@@ -1,0 +1,105 @@
+﻿<Page x:Class="WpfApp.Admin.AdminPage.CashierPage.AdminCashierPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp.Admin"
+      mc:Ignorable="d" 
+      d:DesignHeight="660" d:DesignWidth="860"
+      Title="AdminCashierPage"
+      DataContext="{Binding AdminCashierViewModel , Source={StaticResource Locator}}">
+
+    <Grid Background="#dddddd">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*"></ColumnDefinition>
+            <ColumnDefinition Width="70*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Background="#FFFFFF">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30*"></RowDefinition>
+                <RowDefinition Height="30*"></RowDefinition>
+                <RowDefinition Height="20*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Margin="0,20">
+                <Image Height="100" Width="100">
+                </Image>
+                <Button Background="{StaticResource PrimaryBrush}" Width="100" Margin="0,20" Content="Import" Foreground="White" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Margin="20">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock MinWidth="65" FontWeight="SemiBold" Grid.Column="0" Text="Username: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                            <TextBox x:Name="txtUsername" HorizontalAlignment="Stretch" MinWidth="130"/>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock MinWidth="65" FontWeight="SemiBold" Grid.Column="0" Text="Password: " VerticalAlignment="Center"/>
+                        <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                            <TextBox x:Name="txtPassword" HorizontalAlignment="Stretch" MinWidth="130"/>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,15,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontWeight="SemiBold" Grid.Column="0" Text="Role: " MinWidth="65" VerticalAlignment="Center"/>
+                        <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                            <ComboBox x:Name="cboRole" HorizontalAlignment="Stretch" MinWidth="130"/>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,15,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock MinWidth="65" FontWeight="SemiBold" Grid.Column="0" Text="Status: " VerticalAlignment="Center"/>
+                        <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                            <ComboBox x:Name="cboStatus" HorizontalAlignment="Stretch" MinWidth="130"/>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Margin="20,10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="ADD" Width="100" Background="{StaticResource PrimaryBrush}" Foreground="White" />
+                    <Button Content="UPDATE" Width="100" Margin="20,0,0,0" Background="{StaticResource PrimaryBrush}" Foreground="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                    <Button Content="DELETE" Width="100" Background="{StaticResource PrimaryBrush}" Foreground="White" />
+                    <Button Content="CLEAR" Width="100" Margin="20,0,0,0" Background="{StaticResource PrimaryBrush}" Foreground="White"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Margin="10,0,0,0" Background="White">
+            <StackPanel Margin="20">
+                <TextBlock Text="Data of Cashier" FontSize="16" FontWeight="DemiBold" Margin="0,0,0,10"></TextBlock>
+                <DataGrid x:Name="dgCashier">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Cashier Id" Width="*"/>
+                        <DataGridTextColumn Header="User Name" Width="*" />
+                        <DataGridTextColumn Header="Role" Width="*"/>
+                        <DataGridTextColumn Header="Status" Width="*"/>
+                        <DataGridTextColumn Header="Image" Width="*"/>
+                        <DataGridTextColumn Header="Register At" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

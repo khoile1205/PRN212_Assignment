@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Service.DTO;
-using WpfApp.Dialog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,10 +13,12 @@ using System.Windows.Input;
 using WpfApp.Admin;
 using Service.Services.Abstraction;
 using WpfApp.Register;
+using WpfApp.Core.Dialog;
+using WpfApp.Core.BaseViewModel;
 
 namespace WpfApp.Login
 {
-    public class LoginPageViewModel : INotifyPropertyChanged
+    public class LoginPageViewModel : BaseViewModel
     {
         private readonly IAuthService _authService;
         private readonly IServiceProvider _serviceProvider;
@@ -30,40 +31,32 @@ namespace WpfApp.Login
         public string UserName
         {
             get => _username;
-            set
-            {
-                _username = value;
-                OnPropertyChanged(nameof(UserName));
-            }
+            set => SetProperty(ref _username, value);
+
         }
         public string Password
         {
             get => _password;
-            set
-            {
-                _password = value;
-                OnPropertyChanged(nameof(Password));
-            }
+            set => SetProperty(ref _password, value);
+
         }
         public string ErrorMessage
         {
             get => _errorMessage;
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
+            set => SetProperty(ref _errorMessage, value);
+
         }
 
         public ICommand LoginCommand { get; }
-        public ICommand OpenRegisterCommand { get; }
+        public ICommand NavigateRegisterCommand { get; }
+
         public LoginPageViewModel(IAuthService authService, IServiceProvider serviceProvider, IDialogService dialogService)
         {
             this._authService = authService;
             this._serviceProvider = serviceProvider;
             this._dialogService = dialogService;
             LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
-            OpenRegisterCommand = new RelayCommand(ExecuteRegister);
+            NavigateRegisterCommand = new RelayCommand(ExecuteNavigateRegister);
         }
 
         private async void ExecuteLogin(object obj)
@@ -89,17 +82,10 @@ namespace WpfApp.Login
             return true;
         }
 
-        public void ExecuteRegister(object obj)
+        public void ExecuteNavigateRegister(object obj)
         {
             _dialogService.ShowDialog<RegisterWindow>(); // Show the AdminPage
             _dialogService.CloseDialog<LoginPage>();
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

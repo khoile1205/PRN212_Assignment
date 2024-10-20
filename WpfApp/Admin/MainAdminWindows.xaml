@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp.Admin"
         mc:Ignorable="d"
-        Title="T1 Basecamp Management" Height="600" Width="1200"
+        Title="T1 Basecamp Management" Height="700" Width="1200"
         DataContext="{Binding MainAdminWindowsViewModel, Source={StaticResource Locator}}">
-    <Grid>
+    <Grid Background="#DDDDDD">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="75*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="80*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Background="#FF066364">
@@ -25,17 +25,17 @@
 
             <!-- User Info Section -->
             <StackPanel Margin="10" VerticalAlignment="Top">
-                <Image Height="120" Width="120" Margin="0,20,0,0" Source="/Assets/Images/coffee-icon.png"/>
+                <Image Height="120" Width="120" Margin="0,20,0,0" Source="pack://application:,,,/Assets/Images/coffee-icon.png" />
                 <TextBlock FontSize="18" FontWeight="DemiBold" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="White" Text="Admin's Portal" HorizontalAlignment="Center"/>
                 <TextBlock TextWrapping="Wrap" Margin="0,10,0,0" Foreground="White" Text="Username: Admin"/>
             </StackPanel>
 
             <!-- Buttons Section -->
             <StackPanel Margin="10" Grid.Row="1"  VerticalAlignment="Center">
-                <Button Background="#FF066364" Content="Dashboard" Foreground="White" Margin="0,10,0,0" BorderBrush="White" BorderThickness="1" />
-                <Button Background="#FF066364" Content="Add Cashier" Foreground="White" Margin="0,10,0,0" BorderBrush="White" BorderThickness="1"/>
-                <Button Background="#FF066364" Content="Add Products" Foreground="White" Margin="0,10,0,0" BorderBrush="White" BorderThickness="1"/>
-                <Button Background="#FF066364" Content="Customer" Foreground="White" Margin="0,10,0,0" BorderBrush="White" BorderThickness="1"/>
+                <Button Background="#FF066364" Content="Dashboard" Foreground="White" Margin="0,10,0,0" BorderBrush="White" BorderThickness="1" Command="{Binding NavigatePage}" CommandParameter="{x:Static local:WPFAdminConstants.ADMIN_DASHBOARD_PAGE}" />
+                <Button Background="#FF066364" Content="Add Cashier" Foreground="White" Margin="0,10,0,0" BorderBrush="White" BorderThickness="1"  Command="{Binding NavigatePage}" CommandParameter="{x:Static local:WPFAdminConstants.ADMIN_CASHIER_PAGE}" />
+                <Button Background="#FF066364" Content="Add Products" Foreground="White" Margin="0,10,0,0" BorderBrush="White" BorderThickness="1" Command="{Binding NavigatePage}" CommandParameter="{x:Static local:WPFAdminConstants.ADMIN_PRODUCTS_PAGE}" />
+                <Button Background="#FF066364" Content="Customer" Foreground="White" Margin="0,10,0,0" BorderBrush="White" BorderThickness="1" Command="{Binding NavigatePage}" CommandParameter="{x:Static local:WPFAdminConstants.ADMIN_CUSTOMER_PAGE}" />
             </StackPanel>
 
             <!-- Log Out Button Section -->
@@ -44,109 +44,8 @@
             </StackPanel>
         </Grid>
 
-
-
-        <Grid Grid.Column="1" Background="#dddddd">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40*"></RowDefinition>
-                <RowDefinition Height="60*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="20" Background="#FFFFFF">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25*" ></ColumnDefinition>
-                    <ColumnDefinition Width="25*"></ColumnDefinition>
-                    <ColumnDefinition Width="25*"></ColumnDefinition>
-                    <ColumnDefinition Width="25*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid Margin="20, 30"  Grid.Column="0" Background="#FF066364">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.4*"/>
-                        <!-- 40% width for the first StackPanel -->
-                        <ColumnDefinition Width="0.6*"/>
-                        <!-- 60% width for the second StackPanel -->
-                    </Grid.ColumnDefinitions>
-
-                    <!-- User Image Section -->
-                    <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Width="50" Height="50" Source="/Assets/Images/user.png" />
-                    </StackPanel>
-
-                    <!-- Cashier Info Section -->
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Foreground="White"  Text="Total of Cashier" FontWeight="Bold" Margin="0,0,0,5" />
-                        <!-- Bottom margin for spacing -->
-                        <TextBlock Foreground="White" Text="1" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
-                        <!-- Optional styling for better visibility -->
-                    </StackPanel>
-                </Grid>
-                <Grid Margin="20, 30"  Grid.Column="1" Background="#FF066364">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.4*"/>
-                        <!-- 40% width for the first StackPanel -->
-                        <ColumnDefinition Width="0.6*"/>
-                        <!-- 60% width for the second StackPanel -->
-                    </Grid.ColumnDefinitions>
-
-                    <!-- User Image Section -->
-                    <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Width="50" Height="50" Source="/Assets/Images/group-people.png" />
-                    </StackPanel>
-
-                    <!-- Cashier Info Section -->
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Foreground="White" Text="Total of Customer" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <!-- Bottom margin for spacing -->
-                        <TextBlock Foreground="White" Text="1" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
-                        <!-- Optional styling for better visibility -->
-                    </StackPanel>
-                </Grid>
-                <Grid Margin="20, 30"  Grid.Column="2" Background="#FF066364">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.4*"/>
-                        <!-- 40% width for the first StackPanel -->
-                        <ColumnDefinition Width="0.6*"/>
-                        <!-- 60% width for the second StackPanel -->
-                    </Grid.ColumnDefinitions>
-
-                    <!-- User Image Section -->
-                    <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Width="50" Height="50" Source="/Assets/Images/money.png" />
-                    </StackPanel>
-
-                    <!-- Cashier Info Section -->
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Foreground="White" Text="Today's Income" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <!-- Bottom margin for spacing -->
-                        <TextBlock Foreground="White" Text="$90.00" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
-                        <!-- Optional styling for better visibility -->
-                    </StackPanel>
-                </Grid>
-                <Grid Margin="20, 30"  Grid.Column="3" Background="#FF066364">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.4*"/>
-                        <!-- 40% width for the first StackPanel -->
-                        <ColumnDefinition Width="0.6*"/>
-                        <!-- 60% width for the second StackPanel -->
-                    </Grid.ColumnDefinitions>
-
-                    <!-- User Image Section -->
-                    <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Width="50" Height="50" Source="/Assets/Images/money-bag.png" />
-                    </StackPanel>
-
-                    <!-- Cashier Info Section -->
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Foreground="White" Text="Total of Cashier" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <!-- Bottom margin for spacing -->
-                        <TextBlock Foreground="White" Text="$502.00" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
-                        <!-- Optional styling for better visibility -->
-                    </StackPanel>
-                </Grid>
-            </Grid>
-            <StackPanel Grid.Row="1" Margin="20"  Background="#FFFFFF">
-                <Image Source="/Assets/Images/cafeShop.jpg" Width="Auto" Height="Auto"></Image>
-            </StackPanel>
+        <Grid Grid.Column="1" Margin="20">
+            <Frame x:Name="MainFrame" Background="#dddddd" Loaded="Admin_Window_Loaded" NavigationUIVisibility="Hidden" />
         </Grid>
-
     </Grid>
 </Window>

@@ -13,8 +13,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfApp.Core.Components;
 
-namespace WpfApp.Dialog
+namespace WpfApp.Core.Dialog
 {
     public class DialogService : IDialogService
     {
@@ -25,29 +26,18 @@ namespace WpfApp.Dialog
             _serviceProvider = serviceProvider;
         }
 
-        private static bool IsWindowOpen<T>(string windowName = "") where T : Window
-        {
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window is T && (string.IsNullOrEmpty(windowName) || window.Name == windowName))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public void ShowDialog<T>() where T : Window
         {
             var window = _serviceProvider.GetRequiredService<T>();
             window.Show();
+            Application.Current.MainWindow = window;
         }
 
         public void CloseDialog<T>() where T : Window
         {
             var window = _serviceProvider.GetRequiredService<T>();
-            Debug.WriteLine(IsWindowOpen<T>());
-            Application.Current.Dispatcher.InvokeAsync(() => window.Close());
+            window.Hide();
         }
+
     }
 }
