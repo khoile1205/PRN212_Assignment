@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Service.DTO;
-using WpfApp.Dialog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +13,7 @@ using System.Windows.Input;
 using WpfApp.Admin;
 using Service.Services.Abstraction;
 using System.Diagnostics;
+using WpfApp.Core.Dialog;
 
 namespace WpfApp.Register
 {

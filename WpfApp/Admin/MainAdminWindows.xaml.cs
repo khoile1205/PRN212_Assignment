@@ -22,6 +22,20 @@ namespace WpfApp.Admin
         public MainAdminWindows()
         {
             InitializeComponent();
+
+            this.Height = WPFAdminConstants.ADMIN_WINDOW_HEIGHT;
+            this.Width = WPFAdminConstants.ADMIN_WINDOW_WIDTH;
+            this.Title = WPFAdminConstants.ADMIN_WINDOW_TITLE;
+
+            Loaded += Admin_Window_Loaded;
+        }
+
+        private void Admin_Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is MainAdminWindowsViewModel viewModel)
+            {
+                viewModel.NavigatePageExecute(WPFAdminConstants.ADMIN_DASHBOARD_PAGE);
+            }
         }
     }
 }

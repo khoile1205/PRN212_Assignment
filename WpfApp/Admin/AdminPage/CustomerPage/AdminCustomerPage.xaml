@@ -1,0 +1,24 @@
+﻿<Page x:Class="WpfApp.Admin.AdminPage.CustomerPage.AdminCustomerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp.Admin.AdminPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="660" d:DesignWidth="900"
+      Title="AdminCustomerPage"
+      DataContext="{Binding AdminCustomerViewModel , Source={StaticResource Locator}}">
+    <StackPanel Background="#FFFFFF">
+        <StackPanel Margin="20">
+            <TextBlock Margin="0,0,0,20" Text="All Customers" FontSize="16" FontWeight="DemiBold"></TextBlock>
+            <DataGrid >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Total Price" Width="*" />
+                    <DataGridTextColumn Header="Amoumt" Width="*"/>
+                    <DataGridTextColumn Header="Change" Width="*"/>
+                    <DataGridTextColumn Header="Date" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </StackPanel>
+</Page>

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WpfApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:vm="clr-namespace:WpfApp"
+             xmlns:vm="clr-namespace:WpfApp.Core.ViewModelLocator"
              xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
 >
     <Application.Resources>
@@ -13,8 +13,24 @@
             <!-- Define ViewModelLocator -->
             <vm:ViewModelLocator x:Key="Locator" />
 
+            <Style TargetType="DataGrid">
+                <Setter Property="CanUserAddRows" Value="False" />
+                <Setter Property="ColumnHeaderHeight" Value="25" />
+                <Setter Property="AutoGenerateColumns" Value="False" />
+                <Setter Property="HeadersVisibility" Value="Column" />
+            </Style>
+
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="MinWidth" Value="40" />
+            </Style>
+
             <ResourceDictionary.MergedDictionaries>
                 <!-- Material Design Theme -->
+                <ResourceDictionary Source="pack://application:,,,/Core/Themes/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -9,8 +9,13 @@ using System.IO;
 using System.Windows;
 using WpfApp.Admin;
 using WpfApp.Login;
-using WpfApp.Dialog;
 using WpfApp.Register;
+using WpfApp.Admin.AdminPage.DashboardPage;
+using WpfApp.Admin.AdminPage.CashierPage;
+using WpfApp.Admin.AdminPage.CustomerPage;
+using WpfApp.Admin.AdminPage.ProductPage;
+using WpfApp.Core.Dialog;
+using WpfApp.Core.Components;
 
 namespace WpfApp
 {
@@ -36,7 +41,7 @@ namespace WpfApp
             var serviceCollection = new ServiceCollection();
             // Register ViewModels and Views
             RegistryPageView(serviceCollection);
-            RegistryServiceViewModel(serviceCollection);
+
             // Configure additional services (likely located in Service.DI)
             DependencyInjection.ConfigureServices(serviceCollection, Configuration);
 
@@ -50,16 +55,32 @@ namespace WpfApp
         private void RegistryPageView(ServiceCollection service)
         {
             service.AddSingleton<IDialogService, DialogService>();
+            service.AddSingleton<ConfirmationDialog>();
 
-            service.AddTransient<LoginPage>();
-            service.AddTransient<MainAdminWindows>();
-            service.AddTransient<RegisterWindow>();
-        }
-        private void RegistryServiceViewModel(ServiceCollection service)
-        {
-            service.AddTransient<LoginPageViewModel>();
-            service.AddTransient<MainAdminWindowsViewModel>();
-            service.AddTransient<RegisterWindowViewModel>();
+            #region Admin
+
+            service.AddSingleton<MainAdminWindows>();
+            service.AddSingleton<MainAdminWindowsViewModel>();
+            service.AddTransient<AdminDashboardPage>();
+            service.AddTransient<AdminDashboardViewModel>();
+            service.AddTransient<AdminCashierPage>();
+            service.AddTransient<AdminCashierViewModel>();
+            service.AddTransient<AdminCustomerPage>();
+            service.AddTransient<AdminCustomerViewModel>();
+            service.AddTransient<AdminProductPage>();
+            service.AddTransient<AdminProductViewModel>();
+
+            #endregion
+
+            #region Login
+            service.AddSingleton<LoginPage>();
+            service.AddSingleton<LoginPageViewModel>();
+            #endregion
+
+            #region Register
+            service.AddSingleton<RegisterWindow>();
+            service.AddSingleton<RegisterWindowViewModel>();
+            #endregion
         }
 
         private void OnInitializeScreen()

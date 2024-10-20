@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WpfApp
+namespace WpfApp.Core.Components
 {
     public static class PasswordBoxBehavior
     {
