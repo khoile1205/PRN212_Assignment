@@ -20,6 +20,11 @@ namespace Service.Services
             this.unitOfWork = unitOfWork;
         }
 
+        public async Task<User> AddUser(User user)
+        {
+            return await unitOfWork.Users.Add(user);
+        }
+
         public async Task<IEnumerable<User>> GetListUserByRole(AppEnums.ROLE_ENUMS role)
         {
             int roleId = (int)role;

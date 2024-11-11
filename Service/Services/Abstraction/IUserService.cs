@@ -11,6 +11,6 @@ namespace Service.Services.Abstraction
     public interface IUserService
     {
         public Task<IEnumerable<User>> GetListUserByRole(ROLE_ENUMS role);
-        public Task AddUser(User user);
+        public Task<User> AddUser(User user);
     }
 }

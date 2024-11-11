@@ -136,5 +136,20 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             }
         }
 
+        private async Task AddCashierAsync()
+        {
+            var newUser = new User
+            {
+                Role = SelectedRole,
+                Avatar = CashierImagePath,
+                CreatedTimestamp = DateTime.Now
+                // Map other necessary properties, e.g., Username and Password
+            };
+
+            await _userService.AddUser(newUser);
+            ListCashier.Add(newUser);
+            ClearFields();
+        }
+
     }
 }
