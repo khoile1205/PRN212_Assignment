@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
-    [DbContext(typeof(Prn211AssignmentContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20241001201420_InitialDatabase")]
     partial class InitialDatabase
     {

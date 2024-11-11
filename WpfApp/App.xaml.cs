@@ -16,6 +16,7 @@ using WpfApp.Admin.AdminPage.CustomerPage;
 using WpfApp.Admin.AdminPage.ProductPage;
 using WpfApp.Core.Dialog;
 using WpfApp.Core.Components;
+using WpfApp.Utils;
 
 namespace WpfApp
 {
@@ -45,8 +46,11 @@ namespace WpfApp
             // Configure additional services (likely located in Service.DI)
             DependencyInjection.ConfigureServices(serviceCollection, Configuration);
 
+            serviceCollection.AddSingleton<IUploadService>(provider => new UploadService(Path.Combine(Environment.CurrentDirectory, "Images")));
+
             // Build the service provider
             ServiceProvider = serviceCollection.BuildServiceProvider();
+
 
             // Initialize the first screen (LoginPage in this case)
             OnInitializeScreen();
@@ -55,20 +59,20 @@ namespace WpfApp
         private void RegistryPageView(ServiceCollection service)
         {
             service.AddSingleton<IDialogService, DialogService>();
-            service.AddSingleton<ConfirmationDialog>();
+            //service.AddSingleton<ConfirmationDialog>();
 
             #region Admin
 
             service.AddSingleton<MainAdminWindows>();
             service.AddSingleton<MainAdminWindowsViewModel>();
-            service.AddTransient<AdminDashboardPage>();
-            service.AddTransient<AdminDashboardViewModel>();
-            service.AddTransient<AdminCashierPage>();
-            service.AddTransient<AdminCashierViewModel>();
-            service.AddTransient<AdminCustomerPage>();
-            service.AddTransient<AdminCustomerViewModel>();
-            service.AddTransient<AdminProductPage>();
-            service.AddTransient<AdminProductViewModel>();
+            service.AddSingleton<AdminDashboardPage>();
+            service.AddSingleton<AdminDashboardViewModel>();
+            service.AddSingleton<AdminCashierPage>();
+            service.AddSingleton<AdminCashierViewModel>();
+            service.AddSingleton<AdminCustomerPage>();
+            service.AddSingleton<AdminCustomerViewModel>();
+            service.AddSingleton<AdminProductPage>();
+            service.AddSingleton<AdminProductViewModel>();
 
             #endregion
 

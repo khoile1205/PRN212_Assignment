@@ -11,5 +11,7 @@ namespace Service.Constants
         public const string CONNECTION_STRING_NAME = "Database";
 
         public const string ROLES_USER = "User";
+
+        public const int ROLES_CASHIER = 3;
     }
 }

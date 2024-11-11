@@ -4,6 +4,7 @@ using DataAccess.Repository;
 using DataAccess.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Service.DTO;
+using Service.Enums;
 using Service.Services.Abstraction;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,10 @@ namespace Service.Services
             _mapper = mapper;
         }
 
+        public UserDto getCurrentUser()
+        {
+            return _currentUser;
+        }
         public async Task<UserDto?> login(LoginDto loginDto)
         {
 
@@ -64,7 +69,7 @@ namespace Service.Services
                 return false; // User already exists
             }
 
-            var roles = await _unitOfWork.Roles.GetFirstOrDefault(r => r.Name == "Customer"); 
+            var roles = await _unitOfWork.Roles.GetFirstOrDefault(r => r.Id == (int)AppEnums.ROLE_ENUMS.Admin);
             var newUser = _mapper.Map<User>(signUpDto);
 
             newUser.Password = signUpDto.Password;

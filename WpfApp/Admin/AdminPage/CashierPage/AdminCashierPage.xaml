@@ -21,9 +21,9 @@
                 <RowDefinition Height="20*"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Margin="0,20">
-                <Image Height="100" Width="100">
+                <Image Height="100" Width="100" Name="cashierImage" Source="{Binding CashierImage}">
                 </Image>
-                <Button Background="{StaticResource PrimaryBrush}" Width="100" Margin="0,20" Content="Import" Foreground="White" />
+                <Button Background="{StaticResource PrimaryBrush}" Width="100" Margin="0,20" Content="Import" Foreground="White" Command="{Binding ImportImageCommand}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="20">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Stretch">
@@ -58,7 +58,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock FontWeight="SemiBold" Grid.Column="0" Text="Role: " MinWidth="65" VerticalAlignment="Center"/>
                         <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                            <ComboBox x:Name="cboRole" HorizontalAlignment="Stretch" MinWidth="130"/>
+                            <ComboBox x:Name="cboRole" HorizontalAlignment="Stretch" MinWidth="130" DisplayMemberPath="Name" SelectedItem="{Binding SelectedRole}" ItemsSource="{Binding Roles}" Background="White"/>
                         </Border>
                     </Grid>
                 </StackPanel>
@@ -89,14 +89,13 @@
         <Grid Grid.Column="1" Margin="10,0,0,0" Background="White">
             <StackPanel Margin="20">
                 <TextBlock Text="Data of Cashier" FontSize="16" FontWeight="DemiBold" Margin="0,0,0,10"></TextBlock>
-                <DataGrid x:Name="dgCashier">
+                <DataGrid x:Name="dgCashier" ItemsSource="{Binding ListCashier}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Cashier Id" Width="*"/>
-                        <DataGridTextColumn Header="User Name" Width="*" />
-                        <DataGridTextColumn Header="Role" Width="*"/>
-                        <DataGridTextColumn Header="Status" Width="*"/>
-                        <DataGridTextColumn Header="Image" Width="*"/>
-                        <DataGridTextColumn Header="Register At" Width="*"/>
+                        <DataGridTextColumn Header="Cashier Id" Width="*" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="User Name" Width="*" Binding="{Binding Username}"/>
+                        <DataGridTextColumn Header="Role" Width="*"  Binding="{Binding Role.Name}"/>
+                        <DataGridTextColumn Header="Status" Width="*" Binding="{Binding Status}"/>
+                        <DataGridTextColumn Header="Register At" Width="*" Binding="{Binding CreatedTimestamp}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

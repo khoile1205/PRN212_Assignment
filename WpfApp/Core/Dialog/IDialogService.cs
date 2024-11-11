@@ -11,6 +11,5 @@ namespace WpfApp.Core.Dialog
     {
         void ShowDialog<T>() where T : Window;
         void CloseDialog<T>() where T : Window;
-        bool ShowConfirmationDialog(string message);
     }
 }

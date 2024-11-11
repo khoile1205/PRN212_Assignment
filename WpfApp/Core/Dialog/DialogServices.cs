@@ -38,6 +38,5 @@ namespace WpfApp.Core.Dialog
             var window = _serviceProvider.GetRequiredService<T>();
             window.Hide();
         }
-
     }
 }

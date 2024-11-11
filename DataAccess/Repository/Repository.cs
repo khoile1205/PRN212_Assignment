@@ -11,21 +11,22 @@ namespace DataAccess.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        internal Prn211AssignmentContext context;
+        internal ApplicationDbContext context;
         internal DbSet<T> dbSet;
 
-        public Repository(Prn211AssignmentContext context)
+        public Repository(ApplicationDbContext context)
         {
             this.context = context;
             this.dbSet = context.Set<T>();
         }
 
-        public T Add(T _object)
+        // Async Add method (keep the same name)
+        public async Task<T> Add(T _object)
         {
             try
             {
-                context.Add(_object);
-                context.SaveChanges();
+                await context.AddAsync(_object);  // Use AddAsync for async add
+                await context.SaveChangesAsync(); // Use SaveChangesAsync for async save
             }
             catch (Exception ex)
             {
@@ -35,38 +36,39 @@ namespace DataAccess.Repository
             return _object;
         }
 
-        public T Delete(T _object)
+        // Async Delete method (keep the same name)
+        public async Task<T> Delete(T _object)
         {
             try
             {
-                context.Remove(_object);
-                context.SaveChanges();
-
+                context.Remove(_object);  // Use Remove for delete
+                await context.SaveChangesAsync(); // Use SaveChangesAsync for async save
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-
                 throw;
             }
             return _object;
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        // Async GetAll method (keep the same name)
+        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IQueryable<T>> include = null)
         {
             IQueryable<T> query = dbSet;
+
             try
             {
+                // Apply filter if provided
                 if (filter != null)
                 {
                     query = query.Where(filter);
                 }
-                if (includeProperties != null)
+
+                // Apply includes if provided
+                if (include != null)
                 {
-                    foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        query = query.Include(includeProp);
-                    }
+                    query = include(query);
                 }
             }
             catch (Exception ex)
@@ -75,9 +77,10 @@ namespace DataAccess.Repository
                 throw;
             }
 
-            return query.ToList();
-
+            return await query.ToListAsync();
         }
+
+        // Async GetFirstOrDefault method (keep the same name)
         public async Task<T?> GetFirstOrDefault(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>> include = null)
         {
             try
@@ -89,26 +92,22 @@ namespace DataAccess.Repository
                     query = include(query);
                 }
 
-                return await query.FirstOrDefaultAsync(predicate);
+                return await query.FirstOrDefaultAsync(predicate); // Use FirstOrDefaultAsync for async query execution
             }
             catch (Exception ex)
             {
-                // Handle the exception (log it or rethrow a specific exception)
-                // For example, log the error:
                 Console.WriteLine($"An error occurred: {ex.Message}");
-
-                // You might want to throw a custom exception or return default
                 throw new Exception("An error occurred while retrieving the data.", ex);
             }
         }
 
-        public T Update(T _object)
+        // Async Update method (keep the same name)
+        public async Task<T> Update(T _object)
         {
             try
             {
-                context.Update(_object);
-                context.SaveChanges();
-
+                context.Update(_object);  // Use Update for async update
+                await context.SaveChangesAsync(); // Use SaveChangesAsync for async save
             }
             catch (Exception ex)
             {

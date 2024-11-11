@@ -11,7 +11,7 @@ namespace DataAccess.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly Prn211AssignmentContext dbContext;
+        private readonly ApplicationDbContext dbContext;
         private Repository<User> _userRepository;
         private Repository<Role> _roleRepository;
         private Repository<UserOrder> _userOrderRepository;
@@ -19,7 +19,7 @@ namespace DataAccess.UnitOfWork
         private Repository<Product> _productRepository;
 
 
-        public UnitOfWork(Prn211AssignmentContext dbContext)
+        public UnitOfWork(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

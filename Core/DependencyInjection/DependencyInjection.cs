@@ -23,13 +23,16 @@ namespace Service.DI
 
             // Register DB Context
             string CONNECTION_STRING = configuration.GetConnectionString(AppConstants.CONNECTION_STRING_NAME);
-            services.AddDbContext<Prn211AssignmentContext>(option => option.UseSqlServer(CONNECTION_STRING));
+            services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(CONNECTION_STRING));
             services.AddAutoMapper(typeof(UserAutoMapper));
             // Register DAL (Repositories)
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Register BLL (Services)
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
+
         }
     }
 }

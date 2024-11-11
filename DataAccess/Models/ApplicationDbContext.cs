@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models;
 
-public partial class Prn211AssignmentContext : DbContext
+public partial class ApplicationDbContext : DbContext
 {
-    public Prn211AssignmentContext()
+    public ApplicationDbContext()
     {
     }
 
-    public Prn211AssignmentContext(DbContextOptions<Prn211AssignmentContext> options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }

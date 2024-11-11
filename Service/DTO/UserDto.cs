@@ -10,13 +10,10 @@ namespace Service.DTO
 {
     public class UserDto
     {
-        [NotNull]
         public int Id { get; set; }
 
-        [NotNull]
         public string Username { get; set; }
 
-        [NotNull]
         public string Status { get; set; }
 
         public string? Avatar { get; set; }
