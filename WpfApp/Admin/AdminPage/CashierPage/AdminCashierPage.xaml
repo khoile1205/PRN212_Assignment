@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="660" d:DesignWidth="860"
       Title="AdminCashierPage"
+      xmlns:components="clr-namespace:WpfApp.Core.Components"
       DataContext="{Binding AdminCashierViewModel , Source={StaticResource Locator}}">
 
     <Grid Background="#dddddd">
@@ -21,8 +22,9 @@
                 <RowDefinition Height="20*"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Margin="0,20">
-                <Image Height="100" Width="100" Name="cashierImage" Source="{Binding CashierImage}">
-                </Image>
+                <Border Background="LightGray" Width="100" Height="100">
+                    <Image Name="cashierImage" Source="{Binding CashierImage}" Width="100" Height="100"/>
+                </Border>
                 <Button Background="{StaticResource PrimaryBrush}" Width="100" Margin="0,20" Content="Import" Foreground="White" Command="{Binding ImportImageCommand}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="20">
@@ -34,7 +36,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock MinWidth="65" FontWeight="SemiBold" Grid.Column="0" Text="Username: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                            <TextBox x:Name="txtUsername" HorizontalAlignment="Stretch" MinWidth="130"/>
+                            <TextBox x:Name="txtUsername" HorizontalAlignment="Stretch" MinWidth="130" Text="{Binding Username}"/>
                         </Border>
                     </Grid>
                 </StackPanel>
@@ -46,7 +48,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock MinWidth="65" FontWeight="SemiBold" Grid.Column="0" Text="Password: " VerticalAlignment="Center"/>
                         <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                            <TextBox x:Name="txtPassword" HorizontalAlignment="Stretch" MinWidth="130"/>
+                            <PasswordBox components:PasswordBoxBehavior.BindablePassword="{Binding Password, Mode=TwoWay}" HorizontalAlignment="Stretch" MinWidth="130" SelectionBrush="White"/>
                         </Border>
                     </Grid>
                 </StackPanel>
@@ -70,19 +72,19 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock MinWidth="65" FontWeight="SemiBold" Grid.Column="0" Text="Status: " VerticalAlignment="Center"/>
                         <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                            <ComboBox x:Name="cboStatus" HorizontalAlignment="Stretch" MinWidth="130"/>
+                            <ComboBox x:Name="cboStatus" HorizontalAlignment="Stretch" MinWidth="130" ItemsSource="{Binding StatusOptions}"/>
                         </Border>
                     </Grid>
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="2" Margin="20,10">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="ADD" Width="100" Background="{StaticResource PrimaryBrush}" Foreground="White" />
-                    <Button Content="UPDATE" Width="100" Margin="20,0,0,0" Background="{StaticResource PrimaryBrush}" Foreground="White"/>
+                    <Button Content="ADD" Width="100" Background="{StaticResource PrimaryBrush}" Foreground="White" Command="{Binding AddCommand}" />
+                    <Button Content="UPDATE" Width="100" Margin="20,0,0,0" Background="{StaticResource PrimaryBrush}" Foreground="White" Command="{Binding UpdateCommand}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                    <Button Content="DELETE" Width="100" Background="{StaticResource PrimaryBrush}" Foreground="White" />
-                    <Button Content="CLEAR" Width="100" Margin="20,0,0,0" Background="{StaticResource PrimaryBrush}" Foreground="White"/>
+                    <Button Content="DELETE" Width="100" Background="{StaticResource PrimaryBrush}" Foreground="White" Command="{Binding DeleteCommand}"/>
+                    <Button Content="CLEAR" Width="100" Margin="20,0,0,0" Background="{StaticResource PrimaryBrush}" Foreground="White" Command="{Binding ClearCommand}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

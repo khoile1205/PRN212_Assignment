@@ -1,85 +1,52 @@
-﻿using Core.Command;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DataAccess.Models;
-using Service.Services;
 using Service.Services.Abstraction;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Windows;
 using System.Windows.Media.Imaging;
-using WpfApp.Core.BaseViewModel;
 using WpfApp.Utils;
 
 namespace WpfApp.Admin.AdminPage.CashierPage
 {
-    public class AdminCashierViewModel : BaseViewModel
+    public partial class AdminCashierViewModel : ObservableObject
     {
         private readonly IUploadService _uploadService;
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
 
-        public ObservableCollection<Role> Roles { get; } = new ObservableCollection<Role>();
-        public ObservableCollection<User> ListCashier { get; } = new ObservableCollection<User>();
+        public ObservableCollection<Role> Roles { get; } = new();
+        public ObservableCollection<User> ListCashier { get; } = new();
+        public ObservableCollection<string> StatusOptions { get; } = new() { "Active", "Inactive" };
 
-        private BitmapImage _cashierImage;
-        public BitmapImage CashierImage
-        {
-            get => _cashierImage;
-            set => SetProperty(ref _cashierImage, value);
-        }
+        [ObservableProperty]
+        private BitmapImage? _cashierImage;
 
-        private string _cashierImagePath;
-        public string CashierImagePath
-        {
-            get => _cashierImagePath;
-            set => SetProperty(ref _cashierImagePath, value);
-        }
+        [ObservableProperty]
+        private string? _cashierImagePath;
 
-        private Role _selectedRole;
-        public Role SelectedRole
-        {
-            get => _selectedRole;
-            set => SetProperty(ref _selectedRole, value);
-        }
+        [ObservableProperty]
+        private Role? _selectedRole;
 
-        private User _selectedCashier;
-        public User SelectedCashier
-        {
-            get => _selectedCashier;
-            set
-            {
-                SetProperty(ref _selectedCashier, value);
-                if (value != null)
-                {
-                    // Populate fields based on selected cashier for edit functionality
-                    CashierImage = new BitmapImage(new Uri(value.Avatar));
-                    CashierImagePath = value.Avatar;
-                    SelectedRole = value.Role;
-                    // Assume other properties like Username and Status are also mapped here
-                }
-            }
-        }
+        [ObservableProperty]
+        private User? _selectedCashier;
 
-        public ICommand ImportImageCommand { get; }
-        public ICommand SaveImageCommand { get; }
-        public ICommand AddCommand { get; }
-        public ICommand UpdateCommand { get; }
-        public ICommand DeleteCommand { get; }
-        public ICommand ClearCommand { get; }
+        [ObservableProperty]
+        private string? _username;
+
+        [ObservableProperty]
+        private string? _password;
+
+        [ObservableProperty]
+        private string? _status;
 
         public AdminCashierViewModel(IUploadService uploadService, IUserService userService, IRoleService roleService)
         {
-            _uploadService = uploadService ?? throw new ArgumentNullException(nameof(uploadService));
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
-
-            ImportImageCommand = new RelayCommand(ImportImage);
-            AddCommand = new RelayCommand(async (_) => await AddCashierAsync());
-            UpdateCommand = new RelayCommand(async (_) => await UpdateCashierAsync(), (_) => SelectedCashier != null);
-            DeleteCommand = new RelayCommand(async (_) => await DeleteCashierAsync(), (_) => SelectedCashier != null);
-            ClearCommand = new RelayCommand(ClearFields);
+            _uploadService = uploadService;
+            _userService = userService;
+            _roleService = roleService;
 
             InitializeViewModelAsync();
         }
@@ -103,8 +70,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             }
             catch (Exception ex)
             {
-                // Handle error (e.g., show message to the user)
-                Console.WriteLine($"Failed to load roles: {ex.Message}");
+                MessageBox.Show($"Failed to load roles: {ex.Message}");
             }
         }
 
@@ -121,35 +87,154 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             }
             catch (Exception ex)
             {
-                // Handle error (e.g., show message to the user)
-                Console.WriteLine($"Failed to load cashiers: {ex.Message}");
+                MessageBox.Show($"Failed to load cashiers: {ex.Message}");
             }
         }
 
-        private void ImportImage(object _)
+
+
+        [RelayCommand]
+        private void ImportImage()
         {
-            var (image, path) = _uploadService.UploadImage();
-            if (image != null && path != null)
+            try
             {
-                CashierImage = image;
-                CashierImagePath = path;
+                var (image, path) = _uploadService.UploadImage();
+                if (image != null && path != null)
+                {
+                    CashierImage = image;
+                    CashierImagePath = path;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to import image: {ex.Message}");
             }
         }
 
+        [RelayCommand]
         private async Task AddCashierAsync()
         {
-            var newUser = new User
-            {
-                Role = SelectedRole,
-                Avatar = CashierImagePath,
-                CreatedTimestamp = DateTime.Now
-                // Map other necessary properties, e.g., Username and Password
-            };
+            if (!ValidateCashierInputs()) return;
 
-            await _userService.AddUser(newUser);
-            ListCashier.Add(newUser);
-            ClearFields();
+            try
+            {
+                var newUser = new User
+                {
+                    Role = SelectedRole,
+                    Avatar = CashierImagePath,
+                    CreatedTimestamp = DateTime.Now,
+                    Username = Username,
+                    Password = Password,
+                    Status = Status
+                };
+
+                await _userService.AddUser(newUser);
+                ListCashier.Add(newUser);
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to add cashier: {ex.Message}");
+            }
         }
 
+        [RelayCommand(CanExecute = nameof(CanUpdateOrDelete))]
+        private async Task UpdateCashierAsync()
+        {
+            if (!ValidateCashierInputs() || SelectedCashier == null) return;
+
+            try
+            {
+                SelectedCashier.Role = SelectedRole;
+                SelectedCashier.Avatar = CashierImagePath;
+                SelectedCashier.Username = Username;
+                SelectedCashier.Status = Status;
+
+                await _userService.UpdateUser(SelectedCashier);
+                await LoadCashierAsync();
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to update cashier: {ex.Message}");
+            }
+        }
+
+        [RelayCommand(CanExecute = nameof(CanUpdateOrDelete))]
+        private async Task DeleteCashierAsync()
+        {
+            try
+            {
+                if (SelectedCashier == null)
+                {
+                    MessageBox.Show("Please select a cashier to delete.");
+                    return;
+                }
+
+                await _userService.DeleteUser(SelectedCashier.Id);
+                ListCashier.Remove(SelectedCashier);
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to delete cashier: {ex.Message}");
+            }
+        }
+
+        [RelayCommand]
+        private void ClearFields()
+        {
+            try
+            {
+                SelectedCashier = null;
+                CashierImage = null;
+                CashierImagePath = string.Empty;
+                SelectedRole = null;
+                Username = string.Empty;
+                Password = string.Empty;
+                Status = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to clear fields: {ex.Message}");
+            }
+        }
+
+        private bool CanUpdateOrDelete() => SelectedCashier != null;
+
+        private bool ValidateCashierInputs()
+        {
+            if (string.IsNullOrEmpty(Username))
+            {
+                MessageBox.Show("Username is required.");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(Password))
+            {
+                MessageBox.Show("Password is required.");
+                return false;
+            }
+
+            if (SelectedRole == null)
+            {
+                MessageBox.Show("Role is required.");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(Status))
+            {
+                MessageBox.Show("Status is required.");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(CashierImagePath))
+            {
+                MessageBox.Show("Image is required.");
+                return false;
+            }
+
+            return true;
+        }
     }
 }

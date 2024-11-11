@@ -21,9 +21,11 @@ namespace Service.DI
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
 
-            // Register DB Context
-            string CONNECTION_STRING = configuration.GetConnectionString(AppConstants.CONNECTION_STRING_NAME);
-            services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(CONNECTION_STRING));
+            // Register DB Context with connection string from configuration
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString(AppConstants.CONNECTION_STRING_NAME))
+            );
+
             services.AddAutoMapper(typeof(UserAutoMapper));
             // Register DAL (Repositories)
             services.AddScoped<IUnitOfWork, UnitOfWork>();

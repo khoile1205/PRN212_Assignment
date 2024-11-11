@@ -12,5 +12,8 @@ namespace Service.Services.Abstraction
     {
         public Task<IEnumerable<User>> GetListUserByRole(ROLE_ENUMS role);
         public Task<User> AddUser(User user);
+        public Task<User> UpdateUser(User user);
+        public Task<bool> DeleteUser(int userId);
+        public Task<User?> GetUserById(int userId);
     }
 }
