@@ -36,7 +36,7 @@ namespace WpfApp.Core.Components
             }
         }
 
-        private static void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        private static void PasswordBox_PasswordChanged(object sender  , RoutedEventArgs e)
         {
             if (sender is PasswordBox passwordBox)
             {

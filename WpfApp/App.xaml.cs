@@ -46,7 +46,7 @@ namespace WpfApp
             // Configure additional services (likely located in Service.DI)
             DependencyInjection.ConfigureServices(serviceCollection, Configuration);
 
-            serviceCollection.AddSingleton<IUploadService>(provider => new UploadService(Path.Combine(Environment.CurrentDirectory, "Images")));
+            serviceCollection.AddSingleton<IImageService>(provider => new ImageService(Path.Combine(Environment.CurrentDirectory, "Images")));
 
             // Build the service provider
             ServiceProvider = serviceCollection.BuildServiceProvider();

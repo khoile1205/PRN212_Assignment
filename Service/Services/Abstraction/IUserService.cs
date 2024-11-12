@@ -15,5 +15,6 @@ namespace Service.Services.Abstraction
         public Task<User> UpdateUser(User user);
         public Task<bool> DeleteUser(int userId);
         public Task<User?> GetUserById(int userId);
+        public Task<IEnumerable<User>> GetListUsers();
     }
 }

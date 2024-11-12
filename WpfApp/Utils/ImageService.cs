@@ -5,17 +5,17 @@ using Microsoft.Win32;
 
 namespace WpfApp.Utils
 {
-    public interface IUploadService
+    public interface IImageService
     {
         public (BitmapImage, string) UploadImage();
         public void SaveImage(BitmapImage image, string filePath);
     }
 
-    public class UploadService : IUploadService
+    public class ImageService : IImageService
     {
         private readonly string _imageSaveDirectory;
 
-        public UploadService(string imageSaveDirectory)
+        public ImageService(string imageSaveDirectory)
         {
             _imageSaveDirectory = imageSaveDirectory;
 
@@ -40,22 +40,54 @@ namespace WpfApp.Utils
             // Generate a unique file name with UUID
             var fileExtension = Path.GetExtension(openFileDialog.FileName);
             var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
-            var filePath = Path.Combine(_imageSaveDirectory, uniqueFileName);
-
-            return (image, filePath);
+            return (image, uniqueFileName);
         }
 
-        public void SaveImage(BitmapImage image, string filePath)
+        public void SaveImage(BitmapImage image, string fileName)
         {
-            if (image == null || string.IsNullOrEmpty(filePath))
+            if (image == null || string.IsNullOrEmpty(fileName))
                 return;
 
+            var filePath = Path.Combine(_imageSaveDirectory, fileName);
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 var encoder = new PngBitmapEncoder(); // Defaulting to PNG
                 encoder.Frames.Add(BitmapFrame.Create(image));
                 encoder.Save(fileStream);
             }
+
+            Console.WriteLine($"Image saved to: {filePath}");
+
+        }
+
+        public BitmapImage LoadImage(string fileName)
+        {
+            string filePath;
+
+            // Check if the provided fileName is an absolute path
+            if (Path.IsPathRooted(fileName))
+            {
+                filePath = fileName;
+            }
+            else
+            {
+                // Otherwise, assume it's a file in the _imageSaveDirectory
+                filePath = Path.Combine(_imageSaveDirectory, fileName);
+            }
+
+            if (!File.Exists(filePath))
+            {
+                return null; // File does not exist
+            }
+
+            // Load the image
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(filePath);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+
+            return bitmap;
         }
     }
 }

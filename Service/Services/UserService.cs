@@ -21,13 +21,6 @@ namespace Service.Services
         }
 
 
-        // public async Task<IEnumerable<User>> GetListUserByRole(AppEnums.ROLE_ENUMS role)
-        // {
-        //     int roleId = (int)role;
-
-        //     return await unitOfWork.Users.GetAll(u => u.RoleId == roleId, u => u.Include(u => u.Role));
-        // }
-
         // Create (Add) a new User
         public async Task<User> AddUser(User user)
         {
@@ -91,7 +84,8 @@ namespace Service.Services
         {
             try
             {
-                var user = await _unitOfWork.Users.GetFirstOrDefault(u => u.Id == userId);
+                User user = await _unitOfWork.Users.GetFirstOrDefault(u => u.Id == userId);
+
                 if (user == null)
                 {
                     throw new Exception("User not found.");
@@ -104,6 +98,20 @@ namespace Service.Services
             {
                 Console.WriteLine($"An error occurred while deleting the user: {ex.Message}");
                 throw new Exception("Could not delete the user.", ex);
+            }
+        }
+
+
+        public async Task<IEnumerable<User>> GetListUsers()
+        {
+            try
+            {
+                return await _unitOfWork.Users.GetAll(null, q => q.Include(u => u.Role));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving users: {ex.Message}");
+                throw new Exception("Could not retrieve users.", ex);
             }
         }
     }

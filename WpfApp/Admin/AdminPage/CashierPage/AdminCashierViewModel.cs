@@ -13,7 +13,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
 {
     public partial class AdminCashierViewModel : ObservableObject
     {
-        private readonly IUploadService _uploadService;
+        private readonly IImageService _imageService;
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
 
@@ -31,6 +31,9 @@ namespace WpfApp.Admin.AdminPage.CashierPage
         private Role? _selectedRole;
 
         [ObservableProperty]
+        private string? _selectedStatus;
+
+        [ObservableProperty]
         private User? _selectedCashier;
 
         [ObservableProperty]
@@ -42,9 +45,9 @@ namespace WpfApp.Admin.AdminPage.CashierPage
         [ObservableProperty]
         private string? _status;
 
-        public AdminCashierViewModel(IUploadService uploadService, IUserService userService, IRoleService roleService)
+        public AdminCashierViewModel(IImageService imageService, IUserService userService, IRoleService roleService)
         {
-            _uploadService = uploadService;
+            _imageService = imageService;
             _userService = userService;
             _roleService = roleService;
 
@@ -79,7 +82,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             try
             {
                 ListCashier.Clear();
-                var listCashier = await _userService.GetListUserByRole(Service.Enums.AppEnums.ROLE_ENUMS.Cashier);
+                var listCashier = await _userService.GetListUsers();
                 foreach (var user in listCashier)
                 {
                     ListCashier.Add(user);
@@ -98,7 +101,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
         {
             try
             {
-                var (image, path) = _uploadService.UploadImage();
+                var (image, path) = _imageService.UploadImage();
                 if (image != null && path != null)
                 {
                     CashierImage = image;
@@ -125,11 +128,12 @@ namespace WpfApp.Admin.AdminPage.CashierPage
                     CreatedTimestamp = DateTime.Now,
                     Username = Username,
                     Password = Password,
-                    Status = Status
+                    Status = SelectedStatus
                 };
 
                 await _userService.AddUser(newUser);
-                ListCashier.Add(newUser);
+                _imageService.SaveImage(CashierImage, CashierImagePath);
+                await LoadCashierAsync();
                 ClearFields();
             }
             catch (Exception ex)
@@ -148,7 +152,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
                 SelectedCashier.Role = SelectedRole;
                 SelectedCashier.Avatar = CashierImagePath;
                 SelectedCashier.Username = Username;
-                SelectedCashier.Status = Status;
+                SelectedCashier.Status = SelectedStatus;
 
                 await _userService.UpdateUser(SelectedCashier);
                 await LoadCashierAsync();
@@ -190,9 +194,9 @@ namespace WpfApp.Admin.AdminPage.CashierPage
                 CashierImage = null;
                 CashierImagePath = string.Empty;
                 SelectedRole = null;
+                SelectedStatus = null; // Clear the status
                 Username = string.Empty;
-                Password = string.Empty;
-                Status = null;
+                Password = string.Empty; // Clear the password
             }
             catch (Exception ex)
             {
@@ -200,6 +204,11 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             }
         }
 
+        //[RelayCommand]
+        //private void OnSelectedCashier()
+        //{
+
+        //}
         private bool CanUpdateOrDelete() => SelectedCashier != null;
 
         private bool ValidateCashierInputs()
@@ -222,17 +231,17 @@ namespace WpfApp.Admin.AdminPage.CashierPage
                 return false;
             }
 
-            if (string.IsNullOrEmpty(Status))
+            if (string.IsNullOrEmpty(SelectedStatus))
             {
                 MessageBox.Show("Status is required.");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(CashierImagePath))
-            {
-                MessageBox.Show("Image is required.");
-                return false;
-            }
+            //if (string.IsNullOrEmpty(CashierImagePath))
+            //{
+            //    MessageBox.Show("Image is required.");
+            //    return false;
+            //}
 
             return true;
         }
