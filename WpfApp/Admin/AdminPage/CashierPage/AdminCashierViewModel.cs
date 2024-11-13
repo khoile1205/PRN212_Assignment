@@ -83,7 +83,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             try
             {
                 ListCashier.Clear();
-                var listCashier = await _userService.GetListUsers();
+                var listCashier = await _userService.GetListCashier();
                 foreach (var user in listCashier)
                 {
                     ListCashier.Add(user);
@@ -143,7 +143,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             }
         }
 
-        [RelayCommand(CanExecute = nameof(CanUpdateOrDelete))]
+        [RelayCommand]
         private async Task UpdateCashierAsync()
         {
             if (!ValidateCashierInputs() || SelectedCashier == null) return;
@@ -156,6 +156,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
                 SelectedCashier.Status = SelectedStatus;
 
                 await _userService.UpdateUser(SelectedCashier);
+                _imageService.SaveImage(CashierImage, CashierImagePath);
                 await LoadCashierAsync();
                 ClearFields();
             }
@@ -165,7 +166,7 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             }
         }
 
-        [RelayCommand(CanExecute = nameof(CanUpdateOrDelete))]
+        [RelayCommand]
         private async Task DeleteCashierAsync()
         {
             try
@@ -205,13 +206,6 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             }
         }
 
-        //[RelayCommand]
-        //private void OnSelectedCashier()
-        //{
-
-        //}
-        private bool CanUpdateOrDelete() => SelectedCashier != null;
-
         private bool ValidateCashierInputs()
         {
             if (string.IsNullOrEmpty(Username))
@@ -238,13 +232,35 @@ namespace WpfApp.Admin.AdminPage.CashierPage
                 return false;
             }
 
-            //if (string.IsNullOrEmpty(CashierImagePath))
-            //{
-            //    MessageBox.Show("Image is required.");
-            //    return false;
-            //}
 
             return true;
+        }
+
+        partial void OnSelectedCashierChanged(User? value)
+        {
+            if (value != null)
+            {
+                SelectedRole = value.Role;
+                SelectedStatus = value.Status;
+                Username = value.Username;
+
+                //Load the image if needed
+                if (!string.IsNullOrEmpty(value.Avatar))
+                {
+                    CashierImage = _imageService.LoadImage(value.Avatar);
+                    CashierImagePath = value.Avatar;
+                }
+                else
+                {
+                    CashierImage = null;
+                    CashierImagePath = null;
+
+                }
+            }
+            else
+            {
+                ClearFields();
+            }
         }
     }
 }

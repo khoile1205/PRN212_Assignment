@@ -85,6 +85,33 @@ namespace WpfApp.Admin.AdminPage.ProductPage
             }
         }
 
+        partial void OnSelectedProductChanged(Product? value)
+        {
+            if (value != null)
+            {
+                ProductName = value.ProductName;
+                ProductImagePath = value.Image;
+                SelectedType = value.Type;
+                SelectedStatus = value.Status;
+                ProductStock = value.Stock;
+                ProductPrice = value.Price;
+
+                //Load the image if needed
+                if (!string.IsNullOrEmpty(value.Image))
+                {
+                    ProductImage = _imageService.LoadImage(value.Image);
+                }
+                else
+                {
+                    ProductImage = null;
+                }
+            }
+            else
+            {
+                ClearFields();
+            }
+        }
+
         [RelayCommand]
         private void ImportImage()
         {
@@ -132,8 +159,14 @@ namespace WpfApp.Admin.AdminPage.ProductPage
             }
         }
 
+        [RelayCommand]
         private void ClearFields()
         {
+            if (SelectedProduct != null)
+            {
+                SelectedProduct = null;
+            }
+
             ProductName = string.Empty;
             ProductStock = null;
             SelectedType = null;
@@ -143,6 +176,71 @@ namespace WpfApp.Admin.AdminPage.ProductPage
             ProductImagePath = string.Empty;
 
         }
+
+        [RelayCommand]
+        private async Task UpdateProductAsync()
+        {
+            if (SelectedProduct == null)
+            {
+                MessageBox.Show("Please select a product to update.");
+                return;
+            }
+
+            if (!ValidateProductInputs()) return;
+
+            try
+            {
+                var updatedProduct = new Product
+                {
+                    Id = SelectedProduct.Id,
+                    ProductName = ProductName,
+                    Image = ProductImagePath,
+                    CreatedTimestamp = SelectedProduct.CreatedTimestamp,
+                    UpdatedTimestamp = DateTime.Now,
+                    Stock = ProductStock,
+                    Type = SelectedType,
+                    Status = SelectedStatus,
+                    Price = ProductPrice
+                };
+
+                await _productService.UpdateProduct(updatedProduct);
+                _imageService.SaveImage(ProductImage, ProductImagePath);
+                await LoadProductsAsync();
+                MessageBox.Show("Product updated successfully.");
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to update product: {ex.Message}");
+            }
+        }
+
+        [RelayCommand]
+        private async Task DeleteProductAsync()
+        {
+            if (SelectedProduct == null)
+            {
+                MessageBox.Show("Please select a product to delete.");
+                return;
+            }
+
+            var result = MessageBox.Show($"Are you sure you want to delete {SelectedProduct.ProductName}?",
+                                         "Confirm Delete", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes) return;
+
+            try
+            {
+                await _productService.DeleteProduct(SelectedProduct.Id); // Assuming ProductId is the key identifier
+                ClearFields();
+                await LoadProductsAsync();
+                MessageBox.Show("Product deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to delete product: {ex.Message}");
+            }
+        }
+
         private bool ValidateProductInputs()
         {
             if (string.IsNullOrEmpty(ProductName))

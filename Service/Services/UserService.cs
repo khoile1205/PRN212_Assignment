@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Service.Enums.AppEnums;
 
 namespace Service.Services
 {
@@ -48,9 +49,20 @@ namespace Service.Services
                 throw new Exception("Could not retrieve the user.", ex);
             }
         }
-
+        public async Task<IEnumerable<User>> GetListCashier()
+        {
+            try
+            {
+                return await _unitOfWork.Users.GetAll(u => u.RoleId == (int)ROLE_ENUMS.Admin || u.RoleId == (int)ROLE_ENUMS.Cashier, q => q.Include(u => u.Role));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving users by role: {ex.Message}");
+                throw new Exception("Could not retrieve users by role.", ex);
+            }
+        }
         // Read (Get) a List of Users by Role
-        public async Task<IEnumerable<User>> GetListUserByRole(AppEnums.ROLE_ENUMS role)
+        public async Task<IEnumerable<User>> GetListUserByRole(ROLE_ENUMS role)
         {
             int roleId = (int)role;
 

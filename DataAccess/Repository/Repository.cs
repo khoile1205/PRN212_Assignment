@@ -106,8 +106,32 @@ namespace DataAccess.Repository
         {
             try
             {
-                context.Update(_object);  // Use Update for async update
-                await context.SaveChangesAsync(); // Use SaveChangesAsync for async save
+                var entry = context.Entry(_object);
+
+                // Check if the entity is already being tracked
+                if (entry.State == EntityState.Detached)
+                {
+                    var key = context.Entry(_object).Property("Id").CurrentValue;  // Replace "Id" with the primary key name if different
+                    var existingEntity = await dbSet.FindAsync(key);
+
+                    if (existingEntity != null)
+                    {
+                        // Update the existing tracked entity with new values
+                        context.Entry(existingEntity).CurrentValues.SetValues(_object);
+                    }
+                    else
+                    {
+                        // Attach and update the entity if it wasn't already tracked
+                        dbSet.Attach(_object);
+                        entry.State = EntityState.Modified;
+                    }
+                }
+                else
+                {
+                    entry.State = EntityState.Modified;  // Directly mark as modified if already tracked
+                }
+
+                await context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

@@ -9,6 +9,7 @@ namespace WpfApp.Utils
     {
         public (BitmapImage, string) UploadImage();
         public void SaveImage(BitmapImage image, string filePath);
+        public BitmapImage LoadImage(string fileName);
     }
 
     public class ImageService : IImageService
