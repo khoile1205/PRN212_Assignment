@@ -10,6 +10,13 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Assets\Images\cafeShop.jpg" />
+    <None Remove="Assets\Images\coffee-icon.png" />
+    <None Remove="Assets\Images\group-people.png" />
+    <None Remove="Assets\Images\money-bag.png" />
+    <None Remove="Assets\Images\money.png" />
+    <None Remove="Assets\Images\people.png" />
+    <None Remove="Assets\Images\user.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,27 +40,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\Images\cafeShop.jpg">
+    <Content Include="Assets\Images\cafeShop.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Images\coffee-icon.png">
+    </Content>
+    <Content Include="Assets\Images\coffee-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Images\group-people.png">
+    </Content>
+    <Content Include="Assets\Images\group-people.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Images\money-bag.png">
+    </Content>
+    <Content Include="Assets\Images\money-bag.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Images\money.png">
+    </Content>
+    <Content Include="Assets\Images\money.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Images\people.png">
+    </Content>
+    <Content Include="Assets\Images\people.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Images\user.png">
+    </Content>
+    <Content Include="Assets\Images\user.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 
 </Project>

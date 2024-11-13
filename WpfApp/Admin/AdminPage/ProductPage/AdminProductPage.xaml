@@ -17,17 +17,17 @@
         <StackPanel Grid.Row="0" Background="White" >
             <StackPanel Margin="20">
                 <TextBlock Text="Data of Products" Margin="0,0,0,20"/>
-                <DataGrid>
+                <DataGrid ItemsSource="{Binding ListProducts}" SelectedItem="{Binding SelectedProduct, Mode=TwoWay}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Product Id" Width="*" MinWidth="50"/>
-                        <DataGridTextColumn Header="Product Name" Width="*" MinWidth="50" />
-                        <DataGridTextColumn Header="Type" Width="*" MinWidth="50"/>
-                        <DataGridTextColumn Header="Stock" Width="*" MinWidth="50"/>
-                        <DataGridTextColumn Header="Price" Width="*" MinWidth="50"/>
-                        <DataGridTextColumn Header="Status" Width="*" MinWidth="50"/>
-                        <DataGridTextColumn Header="Image" Width="*" MinWidth="50" />
-                        <DataGridTextColumn Header="Created At" Width="*" MinWidth="50"/>
-                        <DataGridTextColumn Header="Updated At" Width="*" MinWidth="50"/>
+                        <DataGridTextColumn Header="Product Id" Width="*" MinWidth="50" Binding="{Binding Id }"/>
+                        <DataGridTextColumn Header="Product Name" Width="*" MinWidth="50"  Binding="{Binding ProductName}" />
+                        <DataGridTextColumn Header="Type" Width="*" MinWidth="50" Binding="{Binding Type}"/>
+                        <DataGridTextColumn Header="Stock" Width="*" MinWidth="50" Binding="{Binding Stock}"/>
+                        <DataGridTextColumn Header="Price" Width="*" MinWidth="50" Binding="{Binding Price}"/>
+                        <DataGridTextColumn Header="Status" Width="*" MinWidth="50" Binding="{Binding Status}"/>
+                        <DataGridTextColumn Header="Image" Width="*" MinWidth="50"  Binding="{Binding Image}"/>
+                        <DataGridTextColumn Header="Created At" Width="*" MinWidth="50" Binding="{Binding CreatedTimestamp}"/>
+                        <DataGridTextColumn Header="Updated At" Width="*" MinWidth="50" Binding="{Binding UpdatedTimestamp}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
@@ -50,41 +50,43 @@
                         <StackPanel Grid.Column="0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock MinWidth="80" FontWeight="SemiBold" Text="Product Id:" VerticalAlignment="Center" Margin="0,0,20,0"/>
-                                <TextBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120"></TextBox>
+                                <Border BorderBrush="Gray" BorderThickness="1">
+                                    <TextBlock HorizontalAlignment="Stretch" MinWidth="120" Height="25" Text="{Binding SelectedProduct.Id}" ></TextBlock>
+                                </Border>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock MinWidth="80" FontWeight="SemiBold" Text="Product Name:" VerticalAlignment="Center" Margin="0,0,20,0"/>
-                                <TextBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120"></TextBox>
+                                <TextBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120" Text="{Binding ProductName}"></TextBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock MinWidth="80" FontWeight="SemiBold" Text="Type:" VerticalAlignment="Center" Margin="0,0,20,0" HorizontalAlignment="Right"/>
-                                <ComboBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120"></ComboBox>
+                                <ComboBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120" ItemsSource="{Binding TypeOptions}" SelectedItem="{Binding SelectedType}"></ComboBox>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Column="2">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock MinWidth="80" FontWeight="SemiBold" Text="Stock:" VerticalAlignment="Center" Margin="0,0,20,0"/>
-                                <TextBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120"></TextBox>
+                                <TextBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120" Text="{Binding ProductStock}"></TextBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock MinWidth="80" FontWeight="SemiBold" Text="Price ($):" VerticalAlignment="Center" Margin="0,0,20,0"/>
-                                <TextBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120"></TextBox>
+                                <TextBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120" Text="{Binding ProductPrice}"></TextBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <TextBlock MinWidth="80" FontWeight="SemiBold" Text="Status:" VerticalAlignment="Center" Margin="0,0,20,0" HorizontalAlignment="Right"/>
-                                <ComboBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120"></ComboBox>
+                                <ComboBox HorizontalAlignment="Stretch" BorderBrush="Gray" MinWidth="120" ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding SelectedStatus}"></ComboBox>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Column="4">
                             <Border Background="LightGray" Width="100" Height="100">
-                                <Image Name="productImage"  Stretch="UniformToFill" Height="100" Width="100" />
+                                <Image Name="productImage"  Stretch="UniformToFill" Height="100" Width="100" Source="{Binding ProductImage}"/>
                             </Border>
-                            <Button Background="{StaticResource PrimaryBrush}" Content="Import" Foreground="White" Margin="0,10,0,0"></Button>
+                            <Button Background="{StaticResource PrimaryBrush}" Content="Import" Foreground="White" Margin="0,10,0,0" Command="{Binding ImportImageCommand}" ></Button>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,10,0,0">
-                    <Button Content="ADD" Background="{StaticResource PrimaryBrush}" Foreground="White"></Button>
+                    <Button Content="ADD" Background="{StaticResource PrimaryBrush}" Foreground="White" Command="{Binding AddProductCommand}"></Button>
                     <Button Content="UPDATE" FontWeight="Medium" Background="{StaticResource PrimaryBrush}" Foreground="White" Margin="50,0,0,0"></Button>
                     <Button Content="DELETE" Background="{StaticResource PrimaryBrush}" Foreground="White" Margin="50,0,0,0"></Button>
                     <Button Content="CLEAR" Background="{StaticResource PrimaryBrush}" Foreground="White" Margin="50,0,0,0"></Button>
