@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DataAccess.Models;
+using Service.Enums;
 using Service.Services.Abstraction;
 using System;
 using System.Collections.ObjectModel;
@@ -66,10 +67,13 @@ namespace WpfApp.Admin.AdminPage.CashierPage
             try
             {
                 Roles.Clear();
-                var roles = await _roleService.GetList();
+                IEnumerable<Role> roles = await _roleService.GetList();
                 foreach (var role in roles)
                 {
-                    Roles.Add(role);
+                    if (role.Id != (int)AppEnums.ROLE_ENUMS.Customer)
+                    {
+                        Roles.Add(role);
+                    }
                 }
             }
             catch (Exception ex)

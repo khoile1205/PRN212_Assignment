@@ -274,7 +274,7 @@ namespace WpfApp.Admin.AdminPage.ProductPage
                 return false;
             }
 
-            if (string.IsNullOrEmpty(ProductPrice.ToString()) || !int.TryParse(ProductPrice.ToString(), out int price))
+            if (string.IsNullOrEmpty(ProductPrice.ToString()) || !decimal.TryParse(ProductPrice.ToString(), out decimal price))
             {
                 MessageBox.Show("Please enter a valid number for the price.");
                 return false;

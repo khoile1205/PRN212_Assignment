@@ -9,6 +9,7 @@ using WpfApp.Admin;
 using WpfApp.Admin.AdminPage.CashierPage;
 using WpfApp.Admin.AdminPage.CustomerPage;
 using WpfApp.Admin.AdminPage.DashboardPage;
+using WpfApp.Admin.AdminPage.OrderDetail;
 using WpfApp.Admin.AdminPage.ProductPage;
 using WpfApp.Login;
 using WpfApp.Register;
@@ -31,6 +32,7 @@ namespace WpfApp.Core.ViewModelLocator
         public AdminCustomerViewModel AdminCustomerViewModel => ServiceProvider.GetRequiredService<AdminCustomerViewModel>();
         public AdminProductViewModel AdminProductViewModel => ServiceProvider.GetRequiredService<AdminProductViewModel>();
         public AdminCashierViewModel AdminCashierViewModel => ServiceProvider.GetRequiredService<AdminCashierViewModel>();
+        public OrderDetailWindowViewModel OrderDetailWindowViewModel => ServiceProvider.GetRequiredService<OrderDetailWindowViewModel>();
 
 
 

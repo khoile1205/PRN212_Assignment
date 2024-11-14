@@ -8,9 +8,9 @@ namespace Service.DTO.Admin
 {
     public class StatisticDashboardResponseDto
     {
-        private int TotalCashiers { get; set; }
-        private int TotalCustomers { get; set; }
-        private int TotalDailyIncome { get; set; }
-        private int TotalDailyOrders { get; set; }
+        public int TotalCashiers { get; set; }
+        public int TotalDailyOrders { get; set; }
+        public decimal TotalDailyIncome { get; set; }
+        public decimal TotalIncome { get; set; }
     }
 }

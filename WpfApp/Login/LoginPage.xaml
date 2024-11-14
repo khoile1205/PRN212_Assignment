@@ -16,9 +16,9 @@
         <!-- Left Panel with Rectangle and Registration Text -->
         <Grid HorizontalAlignment="Left" Width="400" VerticalAlignment="Center">
             <Rectangle Fill="{StaticResource PrimaryBrush}" Height="434" VerticalAlignment="Center"/>
-            <StackPanel VerticalAlignment="Bottom" Margin="20" HorizontalAlignment="Center" >
-                <Label Content="Don't have an account ?" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5" FontSize="15"/>
-                <Button Content="REGISTER" Background="{StaticResource PrimaryBrush}" BorderBrush="White" BorderThickness="1" Foreground="White" Width="300" Command="{Binding NavigateRegisterCommand}"></Button>
+            <StackPanel VerticalAlignment="Center" Margin="20" HorizontalAlignment="Center" >
+                <Image Height="200" Width="200" Margin="0,20,0,0" Source="pack://application:,,,/Assets/Images/coffee-icon.png"/>
+                <Label Content="Cafe Shop Management System" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,5" FontSize="20"/>
             </StackPanel>
         </Grid>
 
@@ -33,9 +33,6 @@
             <!-- Password Field -->
             <Label Content="Password:" FontWeight="Bold" Margin="0,10,0,0"/>
             <PasswordBox components:PasswordBoxBehavior.BindablePassword="{Binding Password, Mode=TwoWay}" Width="240" Height="25" BorderBrush="Black" CaretBrush="Black" SelectionBrush="White"/>
-
-            <!-- Show Password Checkbox -->
-            <CheckBox Content="Show Password" FontWeight="Bold" ClickMode="Press" Margin="0,10,0,0"/>
 
             <!-- Login Button -->
             <Button x:Name="btn_login" Content="LOGIN" Width="92" Height="30" Command="{Binding LoginCommand}" Background="{StaticResource PrimaryBrush}" Foreground="White" Margin="0,20,0,0"/>

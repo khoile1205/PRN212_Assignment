@@ -29,7 +29,7 @@ namespace WpfApp.Core.Dialog
         public void ShowDialog<T>() where T : Window
         {
             var window = _serviceProvider.GetRequiredService<T>();
-            window.Show();
+            window.Visibility = Visibility.Visible;
             Application.Current.MainWindow = window;
         }
 
