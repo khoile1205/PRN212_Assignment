@@ -14,10 +14,14 @@
             <RowDefinition Height="60*" />
             <RowDefinition Height="40*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Background="White" >
-            <StackPanel Margin="20">
-                <TextBlock Text="Data of Products" Margin="0,0,0,20"/>
-                <DataGrid ItemsSource="{Binding ListProducts}" SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" Height="250" IsReadOnly="True">
+        <Grid Grid.Row="0" Background="White" >
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="90*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Data of Products" />
+                <DataGrid Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding ListProducts}" SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Product Id" Width="*" MinWidth="50" Binding="{Binding Id}"/>
                         <DataGridTextColumn Header="Product Name" Width="*" MinWidth="50"  Binding="{Binding ProductName}" />
@@ -30,8 +34,8 @@
                         <DataGridTextColumn Header="Updated At" Width="*" MinWidth="50" Binding="{Binding UpdatedTimestamp}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-            </StackPanel>
-        </StackPanel>
+            </Grid>
+        </Grid>
         <StackPanel Grid.Row="1" Background="White" Margin="0,10,0,0">
             <Grid Margin="20">
                 <Grid.RowDefinitions>

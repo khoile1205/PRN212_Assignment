@@ -8,17 +8,34 @@
       d:DesignHeight="660" d:DesignWidth="900"
       Title="AdminCustomerPage"
       DataContext="{Binding AdminCustomerViewModel , Source={StaticResource Locator}}">
-    <StackPanel Background="#FFFFFF">
-        <StackPanel Margin="20">
-            <TextBlock Margin="0,0,0,20" Text="All Customers" FontSize="16" FontWeight="DemiBold"></TextBlock>
-            <DataGrid >
+    <Grid Background="#FFFFFF">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="80*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Margin="0,0,0,20" Text="All Orders" FontSize="16" FontWeight="DemiBold"></TextBlock>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <Label Margin="5" VerticalAlignment="Center" Content="Start Date:" />
+                    <DatePicker IsTodayHighlighted="True" Width="130" BorderBrush="Black" SelectedDate="{Binding StartDate}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <Label Margin="5" VerticalAlignment="Center" Content="End Date:" />
+                    <DatePicker IsTodayHighlighted="True" Width="130" BorderBrush="Black" SelectedDate="{Binding EndDate}" />
+                </StackPanel>
+                <Button Content="Search" Width="100" Background="{StaticResource PrimaryBrush}" Foreground="White" Command="{Binding LoadOrdersAsyncCommand}"/>
+            </StackPanel>
+            <DataGrid Grid.Row="2" ItemsSource="{Binding ListOrders}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedOrder, Mode=TwoWay}" IsReadOnly="True" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Total Price" Width="*" />
-                    <DataGridTextColumn Header="Amoumt" Width="*"/>
-                    <DataGridTextColumn Header="Change" Width="*"/>
-                    <DataGridTextColumn Header="Date" Width="*"/>
+                    <DataGridTextColumn Header="Total Order Price" Width="*" Binding="{Binding TotalOrderPrice}"/>
+                    <DataGridTextColumn Header="Customer Pay" Width="*" Binding="{Binding CustomerPay}"/>
+                    <DataGridTextColumn Header="Change" Width="*" Binding="{Binding Change}"/>
+                    <DataGridTextColumn Header="Date" Width="*" Binding="{Binding CreatedTimestamp}"/>
                 </DataGrid.Columns>
             </DataGrid>
-        </StackPanel>
-    </StackPanel>
+
+        </Grid>
+    </Grid>
 </Page>

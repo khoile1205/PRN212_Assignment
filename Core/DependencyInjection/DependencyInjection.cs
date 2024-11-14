@@ -35,6 +35,9 @@ namespace Service.DI
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IOrderService, OrderService>();
+
         }
     }
 }

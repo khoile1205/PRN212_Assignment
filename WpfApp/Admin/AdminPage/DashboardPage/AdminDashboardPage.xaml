@@ -38,7 +38,7 @@
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Foreground="White"  Text="Total of Cashier" FontWeight="Bold" Margin="0,0,0,5" />
                     <!-- Bottom margin for spacing -->
-                    <TextBlock Foreground="White" Text="1" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Foreground="White" Text="{Binding StatisticDashboard.TotalCashiers}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
                     <!-- Optional styling for better visibility -->
                 </StackPanel>
             </Grid>
@@ -57,9 +57,10 @@
 
                 <!-- Cashier Info Section -->
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Foreground="White" Text="Total of Customer" FontWeight="Bold" Margin="0,0,0,5"/>
                     <!-- Bottom margin for spacing -->
-                    <TextBlock Foreground="White" Text="1" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Foreground="White" Text="Today's Order" FontWeight="Bold"/>
+                    <!-- Bottom margin for spacing -->
+                    <TextBlock Foreground="White" Text="{Binding StatisticDashboard.TotalDailyOrders}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
                     <!-- Optional styling for better visibility -->
                 </StackPanel>
             </Grid>
@@ -80,7 +81,7 @@
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Foreground="White" Text="Today's Income" FontWeight="Bold" Margin="0,0,0,5"/>
                     <!-- Bottom margin for spacing -->
-                    <TextBlock Foreground="White" Text="$90.00" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Foreground="White" Text="{Binding StatisticDashboard.TotalDailyIncome, StringFormat=$ {0}}"  FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
                     <!-- Optional styling for better visibility -->
                 </StackPanel>
             </Grid>
@@ -99,9 +100,9 @@
 
                 <!-- Cashier Info Section -->
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Foreground="White" Text="Total of Cashier" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock Foreground="White" Text="Total Income" FontWeight="Bold" Margin="0,0,0,5"/>
                     <!-- Bottom margin for spacing -->
-                    <TextBlock Foreground="White" Text="$502.00" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
+                    <TextBlock Foreground="White" Text="{Binding StatisticDashboard.TotalIncome, StringFormat=$ {0}}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
                     <!-- Optional styling for better visibility -->
                 </StackPanel>
             </Grid>

@@ -7,9 +7,9 @@ public partial class Order
 {
     public int Id { get; set; }
 
-    public decimal? TotalOrderPrice { get; set; }
+    public decimal TotalOrderPrice { get; set; }
 
-    public decimal? CustomerPay { get; set; }
+    public decimal CustomerPay { get; set; }
 
     public string? Status { get; set; }
 
@@ -22,4 +22,7 @@ public partial class Order
     public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 
     public virtual ICollection<UserOrder> UserOrders { get; set; } = new List<UserOrder>();
+
+    public decimal Change => TotalOrderPrice - CustomerPay;
+
 }

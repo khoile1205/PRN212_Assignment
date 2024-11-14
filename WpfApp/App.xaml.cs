@@ -17,6 +17,8 @@ using WpfApp.Admin.AdminPage.ProductPage;
 using WpfApp.Core.Dialog;
 using WpfApp.Core.Components;
 using WpfApp.Utils;
+using WpfApp.Cashier;
+using WpfApp.Admin.AdminPage.OrderDetail;
 
 namespace WpfApp
 {
@@ -73,8 +75,12 @@ namespace WpfApp
             service.AddSingleton<AdminCustomerViewModel>();
             service.AddSingleton<AdminProductPage>();
             service.AddSingleton<AdminProductViewModel>();
-
+            service.AddSingleton<OrderDetailWindow>();
+            service.AddSingleton<OrderDetailWindowViewModel>();
             #endregion
+
+            //#region Cashier
+            //#endregion
 
             #region Login
             service.AddSingleton<LoginPage>();
