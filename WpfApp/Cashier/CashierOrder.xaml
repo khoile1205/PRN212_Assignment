@@ -12,21 +12,19 @@
     <Grid Background="#DDDDDD">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20*" />
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="80*" />
+            <ColumnDefinition Width="55*" />
+            <ColumnDefinition Width="25*" />
         </Grid.ColumnDefinitions>
 
+        <!-- Navigation Section -->
         <Grid Grid.Column="0" Background="{StaticResource PrimaryBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <!--  For user info section  -->
                 <RowDefinition Height="*" />
-                <!--  For buttons section (takes remaining space)  -->
                 <RowDefinition Height="Auto" />
-                <!--  For log out button section  -->
             </Grid.RowDefinitions>
 
-            <!--  User Info Section  -->
+            <!-- User Info Section -->
             <StackPanel Margin="10" VerticalAlignment="Top">
                 <Image
                     Width="120"
@@ -42,19 +40,16 @@
                     Text="Cashier's Portal"
                     TextWrapping="Wrap" />
             </StackPanel>
-            
-            <!--  Buttons Section  -->
-            <StackPanel
-                Grid.Row="1"
-                Margin="10"
-                VerticalAlignment="Center">
+
+            <!-- Buttons Section -->
+            <StackPanel Grid.Row="1" Margin="10" VerticalAlignment="Center">
                 <Button
                     Margin="0,10,0,0"
                     Background="{StaticResource PrimaryBrush}"
                     BorderBrush="White"
                     BorderThickness="1"
                     Content="Dashboard"
-                    Command="{Binding NavigatePage}" 
+                    Command="{Binding NavigatePage}"
                     Foreground="White" />
                 <Button
                     Margin="0,10,0,0"
@@ -62,7 +57,7 @@
                     BorderBrush="White"
                     BorderThickness="1"
                     Content="Add Products"
-                    Foreground="White"/>
+                    Foreground="White" />
                 <Button
                     Margin="0,10,0,0"
                     Background="{StaticResource PrimaryBrush}"
@@ -70,14 +65,10 @@
                     BorderThickness="1"
                     Content="Order"
                     Foreground="White" />
-
             </StackPanel>
 
-            <!--  Log Out Button Section  -->
-            <StackPanel
-                Grid.Row="2"
-                Margin="10"
-                VerticalAlignment="Bottom">
+            <!-- Log Out Button Section -->
+            <StackPanel Grid.Row="2" Margin="10" VerticalAlignment="Bottom">
                 <Button
                     Margin="0,10,0,0"
                     Background="{StaticResource PrimaryBrush}"
@@ -89,436 +80,256 @@
             </StackPanel>
         </Grid>
 
-        <StackPanel
-            Grid.Row="0"
-            Grid.Column="2"
-            Margin="0,23,289,342"
-            Background="White" />
-        <StackPanel
-            Grid.Column="2"
-            Margin="0,420,289,0"
-            Background="White">
-            <Grid Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="80*" />
-                    <RowDefinition Height="20*" />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30*" />
-                            <ColumnDefinition Width="13*" />
-                            <ColumnDefinition Width="30*" />
-                            <ColumnDefinition Width="13*" />
-                            <ColumnDefinition Width="15*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock
-                                    MinWidth="80"
-                                    Margin="0,0,3,0"
-                                    VerticalAlignment="Center"
-                                    FontWeight="SemiBold"
-                                    Text="Type: " />
-                                <ComboBox
-                                    Width="96"
-                                    Height="25"
-                                    BorderBrush="Black"
-                                    BorderThickness="1">
-                                    <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" />
-                                </ComboBox>
-                            </StackPanel>
-                            <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                                <TextBlock
-                                    MinWidth="80"
-                                    Margin="0,0,20,0"
-                                    VerticalAlignment="Center"
-                                    FontWeight="SemiBold"
-                                    Text="Product Name:" />
-                                <TextBox
-                                    MinWidth="120"
-                                    HorizontalAlignment="Stretch"
-                                    BorderBrush="Gray" />
-                            </StackPanel>
-                            <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                                <TextBlock
-                                    MinWidth="80"
-                                    Margin="0,0,20,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    FontWeight="SemiBold"
-                                    Text="Price: " />
-                                <ComboBox
-                                    MinWidth="120"
-                                    HorizontalAlignment="Stretch"
-                                    BorderBrush="Gray" />
-                            </StackPanel>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
-                            <StackPanel Width="240" Orientation="Horizontal">
-                                <TextBlock
-                                    MinWidth="80"
-                                    Margin="0,0,2,0"
-                                    VerticalAlignment="Center"
-                                    FontWeight="SemiBold"
-                                    Text="Product ID:" />
-                                <ComboBox
-                                    Width="96"
-                                    Height="25"
-                                    BorderBrush="Black"
-                                    BorderThickness="1" />
-                            </StackPanel>
-                            <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                                <TextBlock
-                                    MinWidth="80"
-                                    Margin="0,0,2,0"
-                                    VerticalAlignment="Center"
-                                    FontWeight="SemiBold"
-                                    Text="Quantity: " />
-                                <TextBox
-                                    Width="80"
-                                    Height="25"
-                                    MinWidth="80"
-                                    Padding="5"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Right"
-                                    VerticalContentAlignment="Center"
-                                    BorderBrush="Gray"
-                                    BorderThickness="1" />
-                                <StackPanel
-                                    Width="15"
-                                    Margin="0,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    Orientation="Vertical" />
-                            </StackPanel>
-                            <StackPanel Margin="0,10,0,0" Orientation="Horizontal" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="4" />
-                    </Grid>
-                </StackPanel>
-                <StackPanel
-                    Grid.Row="1"
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal" />
-            </Grid>
-        </StackPanel>
-        <Button
-            Grid.Column="2"
-            Height="30"
-            Margin="16,607,829,45"
-            Background="{StaticResource PrimaryBrush}"
-            Content="ADD"
-            Foreground="White" />
-        <Button
-            Grid.Column="2"
-            Margin="185,607,660,45"
-            Background="{StaticResource PrimaryBrush}"
-            Content="DELETE"
-            Foreground="White"
-            RenderTransformOrigin="-0.896,0.612" />
-        <Button
-            Grid.Column="2"
-            Margin="356,607,490,45"
-            Background="{StaticResource PrimaryBrush}"
-            Content="CLEAR"
-            Foreground="White" />
-
-        <Grid Grid.Column="2" Background="#dddddd">
+        <!-- Product Data Grid and Text Boxes Section -->
+        <Grid Grid.Column="1" Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60*" />
-                <RowDefinition Height="40*" />
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="20*" />
             </Grid.RowDefinitions>
-            <StackPanel
-                Grid.Row="0"
-                Margin="0,23,289,68"
-                Background="White" />
-            <StackPanel
-                Grid.Row="1"
-                Margin="0,10,289,0"
-                Background="White">
-                <Grid Margin="20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="80*" />
-                        <RowDefinition Height="20*" />
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0">
-                        <Grid Margin="10,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30*" />
-                                <ColumnDefinition Width="13*" />
-                                <ColumnDefinition Width="30*" />
-                                <ColumnDefinition Width="13*" />
-                                <ColumnDefinition Width="15*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock
-                                        MinWidth="80"
-                                        Margin="0,0,3,0"
-                                        VerticalAlignment="Center"
-                                        FontWeight="SemiBold"
-                                        Text="Type: " />
-                                    <TextBox
-                                        x:Name="txtType"
-                                        Width="96"
-                                        Height="25"
-                                        BorderBrush="Black"
-                                        BorderThickness="1"
-                                        Text="{Binding Type}" />
-                                </StackPanel>
-                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                                    <TextBlock
-                                        MinWidth="80"
-                                        Margin="0,0,20,0"
-                                        VerticalAlignment="Center"
-                                        FontWeight="SemiBold"
-                                        Text="Product Name:" />
-                                    <TextBox
-                                        x:Name="txtProductName"
-                                        MinWidth="120"
-                                        HorizontalAlignment="Stretch"
-                                        BorderBrush="Gray"
-                                        Text="{Binding ProductName}" />
-                                </StackPanel>
-                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                                    <TextBlock
-                                        MinWidth="80"
-                                        Margin="0,0,20,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        FontWeight="SemiBold"
-                                        Text="Price: " />
-                                    <TextBox
-                                        x:Name="txtPrice"
-                                        MinWidth="120"
-                                        HorizontalAlignment="Stretch"
-                                        BorderBrush="Gray"
-                                        Text="{Binding Price}" />
-                                </StackPanel>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2">
-                                <StackPanel Width="240" Orientation="Horizontal">
-                                    <TextBlock
-                                        MinWidth="80"
-                                        Margin="0,0,2,0"
-                                        VerticalAlignment="Center"
-                                        FontWeight="SemiBold"
-                                        Text="Product ID:" />
-                                    <TextBox
-                                        x:Name="txtProductId"
-                                        Width="96"
-                                        Height="25"
-                                        BorderBrush="Black"
-                                        BorderThickness="1"
-                                        Text="{Binding Id}" />
-                                </StackPanel>
-                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                                    <TextBlock
-                                        MinWidth="80"
-                                        Margin="0,0,2,0"
-                                        VerticalAlignment="Center"
-                                        FontWeight="SemiBold"
-                                        Text="Quantity: " />
-                                    <TextBox
-                                        x:Name="txtQuantity"
-                                        Width="80"
-                                        Height="25"
-                                        MinWidth="80"
-                                        Padding="5"
-                                        HorizontalAlignment="Stretch"
-                                        HorizontalContentAlignment="Right"
-                                        VerticalContentAlignment="Center"
-                                        BorderBrush="Gray"
-                                        BorderThickness="1"
-                                        Text="{Binding Quantity}" />
-                                    <StackPanel
-                                        Width="15"
-                                        Margin="0,0,0,0"
-                                        HorizontalAlignment="Right"
-                                        Orientation="Vertical">
-                                    </StackPanel>
-                                </StackPanel>
-                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal" />
-                            </StackPanel>
-                            <StackPanel Grid.Column="4" />
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel
-                        Grid.Row="1"
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal" />
-                </Grid>
 
+            <DataGrid
+                x:Name="dgData"
+                Margin="20"
+                Grid.Row="0"
+                AutoGenerateColumns="False"
+                SelectionChanged="dgData_SelectionChanged"
+                SelectionMode="Single"
+                SelectionUnit="FullRow">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="*"
+                        MinWidth="30"
+                        Binding="{Binding Id}"
+                        Header="Product Id" />
+                    <DataGridTextColumn
+                        Width="*"
+                        MinWidth="30"
+                        Binding="{Binding ProductName}"
+                        Header="ProductName" />
+                    <DataGridTextColumn
+                        Width="*"
+                        MinWidth="30"
+                        Binding="{Binding Type}"
+                        Header="Type" />
+                    <DataGridTextColumn
+                        Width="*"
+                        MinWidth="30"
+                        Binding="{Binding Stock}"
+                        Header="Stock" />
+                    <DataGridTextColumn
+                        Width="*"
+                        MinWidth="30"
+                        Binding="{Binding Price}"
+                        Header="Price" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Margin="20" Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40*" />
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="40*" />
+                        <ColumnDefinition Width="10*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="80"
+                                Margin="0,0,3,0"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Type: " />
+                            <ComboBox
+                                Width="96"
+                                Height="25"
+                                BorderBrush="Black"
+                                BorderThickness="1">
+                                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" />
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="80"
+                                Margin="0,0,20,0"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Product Name:" />
+                            <TextBox
+                                MinWidth="120"
+                                HorizontalAlignment="Stretch"
+                                BorderBrush="Gray" />
+                        </StackPanel>
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="80"
+                                Margin="0,0,20,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Price: " />
+                            <ComboBox
+                                MinWidth="120"
+                                HorizontalAlignment="Stretch"
+                                BorderBrush="Gray" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <StackPanel Width="240" Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="80"
+                                Margin="0,0,2,0"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Product ID:" />
+                            <ComboBox
+                                Width="96"
+                                Height="25"
+                                BorderBrush="Black"
+                                BorderThickness="1" />
+                        </StackPanel>
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="80"
+                                Margin="0,0,2,0"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Quantity: "
+                                Name="txtQuantity"/>
+                            <TextBox
+                                Width="80"
+                                Height="25"
+                                MinWidth="80"
+                                Padding="5"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Right"
+                                VerticalContentAlignment="Center"
+                                BorderBrush="Gray"
+                                BorderThickness="1" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
-            <Button
-                Grid.Row="1"
-                Margin="16,197,829,45"
-                Background="{StaticResource PrimaryBrush}"
-                Click="Add_Click"
-                Content="ADD"
-                Foreground="White" />
-            <Button
-                Grid.Row="1"
-                Margin="185,197,660,45"
-                Background="{StaticResource PrimaryBrush}"
-                Click="Delete_Click"
-                Content="DELETE"
-                Foreground="White"
-                RenderTransformOrigin="-0.896,0.612" />
-            <Button
-                Grid.Row="1"
-                Margin="356,197,490,45"
-                Background="{StaticResource PrimaryBrush}"
-                Click="Clear_Click"
-                Content="CLEAR"
-                Foreground="White" />
+            <StackPanel Grid.Row="2" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal"> 
+                <Button
+                    Margin="30,0"
+                    Padding="30,0"
+                    Background="{StaticResource PrimaryBrush}"
+                    Click="Add_Click"
+                    Content="ADD"
+                    Foreground="White" />
+                <Button
+                    Margin="30,0"
+                    Padding="30,0"
+                    Background="{StaticResource PrimaryBrush}"
+                    Click="Delete_Click"
+                    Content="DELETE"
+                    Foreground="White"
+                    RenderTransformOrigin="-0.896,0.612" />
+                <Button
+                    Margin="30,0"
+                    Padding="30,0"
+                    Background="{StaticResource PrimaryBrush}"
+                    Click="Clear_Click"
+                    Content="CLEAR"
+                    Foreground="White" />
+            </StackPanel>
+
         </Grid>
-        <TextBlock
-            Grid.Column="2"
-            MinWidth="80"
-            Margin="26,44,846,620"
-            FontSize="16"
-            FontWeight="Bold"
-            Text="Menu:" />
-        <StackPanel
-            Grid.Row="0"
-            Grid.Column="2"
-            Margin="677,23,0,0"
-            Background="White" />
-        <DataGrid
-            x:Name="dgData"
-            Grid.Column="2"
-            Margin="0,81,289,576"
-            AutoGenerateColumns="False"
-            SelectionChanged="dgData_SelectionChanged"
-            SelectionMode="Single"
-            SelectionUnit="FullRow">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Width="*"
-                    MinWidth="30"
-                    Binding="{Binding Id}"
-                    Header="Product Id" />
-                <DataGridTextColumn
-                    Width="*"
-                    MinWidth="30"
-                    Binding="{Binding ProductName}"
-                    Header="ProductName" />
-                <DataGridTextColumn
-                    Width="*"
-                    MinWidth="30"
-                    Binding="{Binding Type}"
-                    Header="Type" />
-                <DataGridTextColumn
-                    Width="*"
-                    MinWidth="30"
-                    Binding="{Binding Stock}"
-                    Header="Stock" />
-                <DataGridTextColumn
-                    Width="*"
-                    MinWidth="30"
-                    Binding="{Binding Price}"
-                    Header="Price" />
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid
-            x:Name="dgDataCart"
-            Grid.Column="2"
-            Margin="677,36,0,621"
-            SelectionChanged="DataGrid_SelectionChanged"
-            SelectionMode="Single"
-            SelectionUnit="FullRow">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Width="*"
-                    MinWidth="30"
-                    Binding="{Binding ProductName}"
-                    Header="Product Name" />
-                <DataGridTextColumn
-                    Width="*"
-                    MinWidth="30"
-                    Binding="{Binding Quantity}"
-                    Header="Quantity" />
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button
-            Grid.Column="2"
-            Width="180"
-            Height="40"
-            Margin="725,564,47,80"
-            Background="{StaticResource PrimaryBrush}"
-            Click="Receipt_Click"
-            Content="RECEIPT"
-            Foreground="White"
-            RenderTransformOrigin="0.5,0.5">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform AngleX="-1.685" />
-                    <RotateTransform />
-                    <TranslateTransform X="-0.471" />
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-        <Button
-            Grid.Column="2"
-            Width="180"
-            Height="40"
-            Margin="725,505,47,139"
-            Background="{StaticResource PrimaryBrush}"
-            Click="Pay_Click"
-            Content="PAY"
-            Foreground="White"
-            RenderTransformOrigin="0.5,0.5">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform AngleX="-1.685" />
-                    <RotateTransform />
-                    <TranslateTransform X="-0.471" />
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-        <TextBox
-    Grid.Column="2"
-    Margin="739,349,163,310"
-    FontFamily="Times New Roman"
-    Text="Price ($):"
-    TextWrapping="Wrap" />
-        <TextBox
-    Grid.Column="2"
-    Margin="739,379,149,280"
-    FontFamily="Times New Roman"
-    Text="Amount ($):"
-    TextWrapping="Wrap" />
-        <TextBox
-    Grid.Column="2"
-    Margin="739,411,149,248"
-    FontFamily="Times New Roman"
-    Text="Change ($):"
-    TextWrapping="Wrap" />
-        <TextBox
-    x:Name="txtPriceCart"
-    Grid.Column="2"
-    Margin="814,349,90,310"
-    TextWrapping="Wrap" />
-        <TextBox
-    x:Name="txtAmountCCart"
-    Grid.Column="2"
-    MinWidth="80"
-    Margin="814,379,58,280"
-    Padding="5"
-    HorizontalContentAlignment="Right"
-    VerticalContentAlignment="Center"
-    BorderBrush="Gray"
-    BorderThickness="1" 
-    TextChanged="txtAmountCCart_TextChanged" />
-        <TextBox
-    x:Name="Change"
-    Grid.Column="2"
-    Margin="814,409,90,250"
-    TextWrapping="Wrap" />
+
+        <!-- Cart Data Grid and Action Buttons Section -->
+        <Grid Grid.Column="2" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="55*" />
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="20*" />
+            </Grid.RowDefinitions>
+
+            <DataGrid
+                x:Name="dgDataCart"
+                Grid.Row="0"
+                Margin="20"
+                AutoGenerateColumns="False"
+                SelectionChanged="DataGrid_SelectionChanged"
+                SelectionMode="Single"
+                SelectionUnit="FullRow">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="*"
+                        MinWidth="30"
+                        Binding="{Binding ProductName}"
+                        Header="Product Name" />
+                    <DataGridTextColumn
+                        Width="*"
+                        MinWidth="30"
+                        Binding="{Binding Quantity}"
+                        Header="Quantity" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Row="1" Margin="20, 0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Margin="0,10,0,0"
+                        FontFamily="Times New Roman"
+                        Text="Price ($):"
+                       />
+                    <TextBox
+                        x:Name="txtPriceCart"
+                        Margin="0,10,0,0"
+                        TextWrapping="Wrap" />  
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Margin="0,10,0,0"
+                        FontFamily="Times New Roman"
+                        Text="Amount ($):"
+                        TextWrapping="Wrap" />
+                    <TextBox
+                        x:Name="txtAmountCCart"
+                        MinWidth="100"
+                        Margin="10,10,0,0"
+                        Padding="5"
+                        HorizontalContentAlignment="Right"
+                        HorizontalAlignment="Stretch"
+                        VerticalContentAlignment="Center"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        TextWrapping="Wrap"
+                        TextChanged="txtAmountCCart_TextChanged" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Margin="0,10,0,0"
+                        FontFamily="Times New Roman"
+                        Text="Change ($):"
+                        TextWrapping="Wrap" />
+                    <TextBox
+                        x:Name="Change"
+                        Margin="0,10,0,0"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Margin="20" Grid.Row="2">
+                <Button
+                    Width="180"
+                    Height="40"
+                    Margin="0,10,0,0"
+                    Background="{StaticResource PrimaryBrush}"
+                    Click="Receipt_Click"
+                    Content="RECEIPT"
+                    Foreground="White" />
+                <Button
+                    Width="180"
+                    Height="40"
+                    Margin="0,10,0,0"
+                    Background="{StaticResource PrimaryBrush}"
+                    Click="Pay_Click"
+                    Content="PAY"
+                    Foreground="White" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
