@@ -17,6 +17,7 @@ using WpfApp.Admin.AdminPage.ProductPage;
 using WpfApp.Core.Dialog;
 using WpfApp.Core.Components;
 using WpfApp.Utils;
+using WpfApp.Cashier;
 
 namespace WpfApp
 {
@@ -84,6 +85,11 @@ namespace WpfApp
             #region Register
             service.AddSingleton<RegisterWindow>();
             service.AddSingleton<RegisterWindowViewModel>();
+            #endregion
+
+            #region Cashier
+            // Register MainCashierWindow and its ViewModel
+            service.AddSingleton<CashierOrder>();
             #endregion
         }
 

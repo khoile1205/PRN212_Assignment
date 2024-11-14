@@ -15,6 +15,7 @@ using Service.Services.Abstraction;
 using WpfApp.Register;
 using WpfApp.Core.Dialog;
 using WpfApp.Core.BaseViewModel;
+using WpfApp.Cashier;
 
 namespace WpfApp.Login
 {
@@ -61,21 +62,40 @@ namespace WpfApp.Login
 
         private async void ExecuteLogin(object obj)
         {
-            LoginDto loginDto = new LoginDto();
-            loginDto.Username = _username;
-            loginDto.Password = _password;
-
-            UserDto user = await _authService.login(loginDto);
-            if (user != null)
+            LoginDto loginDto = new LoginDto
             {
-                _dialogService.ShowDialog<MainAdminWindows>(); // Show the AdminPage
+                Username = _username,
+                Password = _password
+            };
+
+            // Attempt login
+            UserDto user = await _authService.login(loginDto);
+
+            if (user != null && user.Role != null)
+            {
+                // Check the user's role using Role.Name
+                if (user.Role.Name == "Admin") // Check for Admin Role
+                {
+                    _dialogService.ShowDialog<MainAdminWindows>();
+                }
+                else if (user.Role.Name == "Cashier") // Check for Cashier Role
+                {
+                    _dialogService.ShowDialog<CashierOrder>();
+                }
+                else
+                {
+                    MessageBox.Show("User role not recognized.");
+                }
+
+                // Close the login dialog
                 _dialogService.CloseDialog<LoginPage>();
             }
             else
             {
-                MessageBox.Show("Not pass");
+                MessageBox.Show("Invalid username or password. Please try again.");
             }
         }
+
 
         private bool CanExecuteLogin(object obj)
         {
