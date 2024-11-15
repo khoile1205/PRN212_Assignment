@@ -17,6 +17,7 @@ namespace DataAccess.UnitOfWork
         private Repository<UserOrder> _userOrderRepository;
         private Repository<Order> _orderRepository;
         private Repository<Product> _productRepository;
+        private Repository<OrderProduct> _orderProductRepository;
 
 
         public UnitOfWork(ApplicationDbContext dbContext)
@@ -29,7 +30,7 @@ namespace DataAccess.UnitOfWork
         public IRepository<UserOrder> UserOrders => _userOrderRepository ??= new Repository<UserOrder>(dbContext);
         public IRepository<Order> Orders => _orderRepository ??= new Repository<Order>(dbContext);
         public IRepository<Product> Products => _productRepository ??= new Repository<Product>(dbContext);
-
+        public IRepository<OrderProduct> OrderProducts => _orderProductRepository ??= new Repository<OrderProduct>(dbContext);
 
         public void Dispose()
         {

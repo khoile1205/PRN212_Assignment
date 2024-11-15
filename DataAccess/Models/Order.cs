@@ -25,4 +25,7 @@ public partial class Order
 
     public decimal Change => TotalOrderPrice - CustomerPay;
 
+    public string ProductAllName => string.Join(", ", OrderProducts
+            .Where(op => op.Product != null)  // Ensure Product is not null
+            .Select(op => op.Product!.ProductName));  // Select Product Name
 }

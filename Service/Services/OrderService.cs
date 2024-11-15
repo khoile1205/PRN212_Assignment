@@ -81,5 +81,10 @@ namespace Service.Services
                 throw new ApplicationException($"An error occurred while fetching the order with ID {orderId}.", ex);
             }
         }
+        public async Task<int> AddOrder(Order order)
+        {
+            await _unitOfWork.Orders.Add(order);
+            return order.Id;
+        }
     }
 }

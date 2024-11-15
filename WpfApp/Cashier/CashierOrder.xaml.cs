@@ -4,32 +4,41 @@ using Service.Services.Abstraction;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows;
-using WpfApp.Admin.AdminPage.DashboardPage;
-using WpfApp.Cashier;
-using Microsoft.Data.SqlClient;
 using System.Windows.Media;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using WpfApp.Core.Dialog;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace WpfApp.Cashier
 {
     public partial class CashierOrder : Window
     {
+        private readonly IDialogService _dialogService;
         private readonly IServiceProvider serviceProvider;
         private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
+        private readonly IAuthService _authService;
+        private readonly IOrderProductService _orderProductService;
+        private readonly IMapper _mapper;
         private float price = 0;
         private readonly ObservableCollection<OrderProductDto> _orderProduct = new ObservableCollection<OrderProductDto>();
 
-        public CashierOrder(IServiceProvider serviceProvider, IProductService productService)
+        public CashierOrder(IServiceProvider serviceProvider, IProductService productService, IDialogService dialogService, IOrderService orderService, IOrderProductService orderProductService, IMapper mapper, IAuthService authService)
         {
+            _dialogService = dialogService;
             this.serviceProvider = serviceProvider;
-            new ObservableCollection<OrderProductDto>();
             _productService = productService;
             InitializeComponent();
             Load();
+            _orderService = orderService;
+            _orderProductService = orderProductService;
+            _mapper = mapper;
+            _authService = authService;
         }
 
         private async void Add_Click(object sender, RoutedEventArgs e)
@@ -55,11 +64,14 @@ namespace WpfApp.Cashier
                 {
                     existingProduct.Quantity += addProduct.Quantity;
                     price += (float)(productPrice * addProduct.Quantity);
+                    existingProduct.Price += (productPrice * addProduct.Quantity);
                 }
                 else
                 {
+                    addProduct.Price = (productPrice * addProduct.Quantity);
                     _orderProduct.Add(addProduct);
                     price += (float)(productPrice * addProduct.Quantity);
+                   
                 }
 
                 MessageBox.Show($"Total Price: {price:C}", "Order Summary", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -69,20 +81,21 @@ namespace WpfApp.Cashier
         }
 
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             if (dgDataCart.SelectedItem is OrderProductDto selectedProduct)
             {
                 var existingProduct = _orderProduct.FirstOrDefault(p => p.ProductId == selectedProduct.ProductId);
                 if (existingProduct != null)
                 {
-                    var allProducts = _productService.GetAllProducts().Result;
+                    var allProducts = await _productService.GetAllProducts();
                     var productDetails = allProducts.FirstOrDefault(p => p.Id == selectedProduct.ProductId);
 
                     if (productDetails is not null)
                     {
                         var productPrice = productDetails.Price;
                         price -= (float)(productPrice * existingProduct.Quantity);
+                        selectedProduct.Price = Convert.ToDecimal(price);
                     }
 
                     _orderProduct.Remove(existingProduct);
@@ -120,16 +133,36 @@ namespace WpfApp.Cashier
             {
                 product.ProductId = selected.Id;
                 product.CreatedTimestamp = DateTime.Now;
-                product.Quantity = int.Parse(string.IsNullOrEmpty(txtQuantity.Text) ? "0" : txtQuantity.Text);
+                if (int.TryParse(txtQuantity.Text, out int quantity) && quantity > 0)
+                {
+                    product.ProductId = selected.Id;
+                    product.CreatedTimestamp = DateTime.Now;
+                    product.Quantity = quantity;
+                    return product;
+                }
+                else
+                {
+                    MessageBox.Show("Quantity must be greater than zero.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            return product;
+            else
+            {
+                MessageBox.Show("Please select a product before adding to the cart.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return null;
+        }
+        private void Logout_Click(object sender, RoutedEventArgs e) {
+            _authService.logOut();
+            _dialogService.CloseDialog<CashierOrder>();
+            _dialogService.ShowDialog<LoginPage>();
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
         }
 
-        private void Pay_Click(object sender, RoutedEventArgs e)
+        private async void Pay_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtPriceCart.Text) || string.IsNullOrWhiteSpace(txtAmountCCart.Text))
             {
@@ -152,9 +185,30 @@ namespace WpfApp.Cashier
                 {
                     try
                     {
-                        SaveOrderDetails(price, amount, change);
+                        //SaveOrderDetails(price, amount, change);
+                        var order = new Order
+                        {
+                            TotalOrderPrice = decimal.Parse(price.ToString()),
+                            CustomerPay = decimal.Parse(amount.ToString()),
+                            CreatedTimestamp = DateTime.Now,
+                            Status = "Completed",
+                            Reason = "Payment Received"
+                        };
 
+                        var orderId = await _orderService.AddOrder(order);
+                        foreach (var item in _orderProduct)
+                        {
+                            item.OrderId = orderId;
+                            await _orderProductService.AddOrderProduct(_mapper.Map<OrderProduct>(item));
+                            
+                        }
+                        PrintReceiptJob();
                         MessageBox.Show("Payment processed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        ResetOrderData();
+
+                        var dashboardCashier = serviceProvider.GetRequiredService<DashboardCashier>();
+                        await dashboardCashier.LoadStatisticDashboardAsync();
 
                         ClearPaymentFields();
                     }
@@ -169,42 +223,17 @@ namespace WpfApp.Cashier
                 MessageBox.Show("Invalid price or amount format. Please check the values entered.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-
-        private void SaveOrderDetails(float totalPrice, float amountPaid, float change)
+        private void ResetOrderData()
         {
-            string connectionString = "Data Source=localhost;Initial Catalog=PRN211_Assignment;User ID=sa;Password=Cunhai123;Encrypt=True;Trust Server Certificate=True";
+            _orderProduct.Clear();
 
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
+            price = 0;
 
-                    DateTime currentTimestamp = DateTime.Now;
+            txtPriceCart.Clear();
+            txtAmountCCart.Clear();
+            Change.Clear();
 
-                    string query = "INSERT INTO Orders (total_order_price, customer_pay, status, reason, created_timestamp, updated_timestamp) " +
-                                   "VALUES (@totalOrderPrice, @customerPay, @status, @reason, @createdTimestamp, @updatedTimestamp)";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@totalOrderPrice", totalPrice);
-                        command.Parameters.AddWithValue("@customerPay", amountPaid);
-                        command.Parameters.AddWithValue("@status", "Completed");
-                        command.Parameters.AddWithValue("@reason", "Payment received");
-                        command.Parameters.AddWithValue("@createdTimestamp", currentTimestamp);
-                        command.Parameters.AddWithValue("@updatedTimestamp", currentTimestamp);
-
-                        command.ExecuteNonQuery();
-                    }
-
-                    MessageBox.Show("Order has been saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while saving the order: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            dgDataCart.ItemsSource = null;
         }
 
         private void ClearPaymentFields()
@@ -265,8 +294,8 @@ namespace WpfApp.Cashier
 
                     // Create a FixedPage and set its dimensions
                     FixedPage fixedPage = new FixedPage();
-                    fixedPage.Width = 600;  // Adjust the width as necessary
-                    fixedPage.Height = 800; // Adjust the height as necessary
+                    fixedPage.Width = 600;
+                    fixedPage.Height = 800;
 
                     // Create a VisualBrush to render the DrawingVisual
                     VisualBrush visualBrush = new VisualBrush(drawingVisual);
@@ -286,9 +315,6 @@ namespace WpfApp.Cashier
                     PageContent pageContent = new PageContent();
                     ((IAddChild)pageContent).AddChild(fixedPage);
                     fixedDocument.Pages.Add(pageContent);
-
-                    // Log to check if we're at the print step
-                    Debug.WriteLine("About to show PrintDialog");
 
                     // Show print dialog and print the receipt
                     bool? result = printDialog.ShowDialog();  // Use ShowDialog instead of PrintDocument
@@ -314,31 +340,35 @@ namespace WpfApp.Cashier
             }
         }
 
+
         // Method to draw the content of the receipt
+        [Obsolete]
         private void PrintReceipt(DrawingContext drawingContext)
         {
-            // Setup layout values
             double y = 20;
-            int colWidth = 120; // Increased column width for readability
+            int colWidth = 120;
             double marginLeft = 10;
             Typeface boldFont = new Typeface(new FontFamily("Arial"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
             Typeface regularFont = new Typeface(new FontFamily("Arial"), FontStyles.Normal, FontWeights.Regular, FontStretches.Normal);
 
             // Draw header (centered)
-            string headerText = "MarcoMan's Cafe Shop";
+            string headerText = "T1 BaseCamp CoffeShop";
             FormattedText headerFormattedText = new FormattedText(
                 headerText,
                 System.Globalization.CultureInfo.InvariantCulture,
                 FlowDirection.LeftToRight,
                 boldFont,
-                24, // Increased font size for the header
+                24,
                 Brushes.Black
             );
-            drawingContext.DrawText(headerFormattedText, new Point((600 - headerFormattedText.Width) / 2, y));
-            y += 50; // Increased spacing after header
+
+            headerFormattedText.TextAlignment = TextAlignment.Center;
+
+            drawingContext.DrawText(headerFormattedText, new Point((headerFormattedText.Width) / 2, y));
+            y += 50;
 
             // Table headers
-            string[] headers = { "OrderID", "ProductName", "Quantity", "Time", "Price" };
+            string[] headers = { "ProductName", "Quantity", "Time", "Price" };
             for (int i = 0; i < headers.Length; i++)
             {
                 drawingContext.DrawText(
@@ -347,29 +377,21 @@ namespace WpfApp.Cashier
                         System.Globalization.CultureInfo.InvariantCulture,
                         FlowDirection.LeftToRight,
                         boldFont,
-                        16, // Increased font size for headers
+                        16,
                         Brushes.Black
                     ),
                     new Point(marginLeft + i * colWidth, y)
                 );
             }
 
-            y += 35; // Increased spacing after table headers
+            y += 35;
+
+            double orderItemY = y;
 
             // Display each product in the order
             foreach (var item in _orderProduct)
             {
-                drawingContext.DrawText(
-                    new FormattedText(
-                        item.OrderId?.ToString() ?? "-",
-                        System.Globalization.CultureInfo.InvariantCulture,
-                        FlowDirection.LeftToRight,
-                        regularFont,
-                        12,
-                        Brushes.Black
-                    ),
-                    new Point(marginLeft, y)
-                );
+                // Print Product Name
                 drawingContext.DrawText(
                     new FormattedText(
                         item.ProductName,
@@ -379,8 +401,10 @@ namespace WpfApp.Cashier
                         12,
                         Brushes.Black
                     ),
-                    new Point(marginLeft + colWidth, y)
+                    new Point(marginLeft + 0 * colWidth, orderItemY)
                 );
+
+                // Print Quantity
                 drawingContext.DrawText(
                     new FormattedText(
                         item.Quantity?.ToString() ?? "0",
@@ -390,8 +414,10 @@ namespace WpfApp.Cashier
                         12,
                         Brushes.Black
                     ),
-                    new Point(marginLeft + 2 * colWidth, y)
+                    new Point(marginLeft + 1 * colWidth, orderItemY)
                 );
+
+                // Print Timestamp
                 drawingContext.DrawText(
                     new FormattedText(
                         item.CreatedTimestamp?.ToString("g") ?? "-",
@@ -401,8 +427,10 @@ namespace WpfApp.Cashier
                         12,
                         Brushes.Black
                     ),
-                    new Point(marginLeft + 3 * colWidth, y)
+                    new Point(marginLeft + 2 * colWidth, orderItemY)
                 );
+
+                // Print Price
                 drawingContext.DrawText(
                     new FormattedText(
                         ((double)(item.Price ?? 0)).ToString("C", System.Globalization.CultureInfo.InvariantCulture),
@@ -412,14 +440,13 @@ namespace WpfApp.Cashier
                         12,
                         Brushes.Black
                     ),
-                    new Point(marginLeft + 4 * colWidth, y)
+                    new Point(marginLeft + 3 * colWidth, orderItemY)
                 );
 
-                y += 5; // Increased spacing between items
+                orderItemY += 15;
             }
 
-            // Print the footer with total price and change
-            y += 40; // Extra space before footer
+            double footerY = orderItemY + 40;
             string footerText = $"Total: {price:C}\nAmount: {txtAmountCCart.Text}\nChange: {Change.Text}";
             drawingContext.DrawText(
                 new FormattedText(
@@ -427,10 +454,10 @@ namespace WpfApp.Cashier
                     System.Globalization.CultureInfo.InvariantCulture,
                     FlowDirection.LeftToRight,
                     regularFont,
-                    16, // Slightly larger font size for footer
+                    16,
                     Brushes.Black
                 ),
-                new Point(marginLeft, y)
+                new Point(marginLeft, footerY)
             );
         }
 
@@ -458,7 +485,6 @@ namespace WpfApp.Cashier
             {
                 float totalPrice = float.Parse(txtPriceCart.Text);
                 float amountGiven = float.Parse(txtAmountCCart.Text);
-
                 float change = amountGiven - totalPrice;
 
                 if (change < 0)
@@ -476,7 +502,9 @@ namespace WpfApp.Cashier
             }
         }
 
-
-
+        private void Dashboard(object sender, RoutedEventArgs e)
+        {
+            _dialogService.ShowDialog<DashboardCashier>();
+        }
     }
 }

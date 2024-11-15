@@ -95,6 +95,7 @@ namespace WpfApp
             #region Cashier
             // Register MainCashierWindow and its ViewModel
             service.AddSingleton<CashierOrder>();
+            service.AddSingleton<DashboardCashier>();
             #endregion
         }
 

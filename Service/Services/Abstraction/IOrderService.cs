@@ -12,5 +12,6 @@ namespace Service.Services.Abstraction
     {
         public Task<IEnumerable<Order>> GetListOrders(DateTime? startTime, DateTime? endDate);
         public Task<Order> GetOrderDetailById(int orderId);
+        public Task<int> AddOrder(Order order);
     }
 }

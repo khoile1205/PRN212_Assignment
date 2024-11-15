@@ -12,5 +12,6 @@ namespace Service.Services.Abstraction
         Task<UserDto> login(LoginDto loginDto);
 
         Task<bool> signUp(SignUpDto signUpDto);
+        void logOut();
     }
 }

@@ -50,14 +50,7 @@
                     BorderThickness="1"
                     Content="Dashboard"
                     Command="{Binding NavigatePage}"
-                    Foreground="White" />
-                <Button
-                    Margin="0,10,0,0"
-                    Background="{StaticResource PrimaryBrush}"
-                    BorderBrush="White"
-                    BorderThickness="1"
-                    Content="Add Products"
-                    Foreground="White" />
+                    Foreground="White" Click="Dashboard" />
                 <Button
                     Margin="0,10,0,0"
                     Background="{StaticResource PrimaryBrush}"
@@ -74,7 +67,7 @@
                     Background="{StaticResource PrimaryBrush}"
                     BorderBrush="White"
                     BorderThickness="1"
-                    Command="{Binding LogoutCommand}"
+                    Click="Logout_Click"
                     Content="Log Out"
                     Foreground="White" />
             </StackPanel>
@@ -136,43 +129,50 @@
                     <StackPanel Grid.Column="0">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
-                                MinWidth="80"
-                                Margin="0,0,3,0"
-                                VerticalAlignment="Center"
-                                FontWeight="SemiBold"
-                                Text="Type: " />
-                            <ComboBox
-                                Width="96"
-                                Height="25"
-                                BorderBrush="Black"
-                                BorderThickness="1">
-                                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" />
-                            </ComboBox>
-                        </StackPanel>
-                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                            <TextBlock
-                                MinWidth="80"
-                                Margin="0,0,20,0"
-                                VerticalAlignment="Center"
-                                FontWeight="SemiBold"
-                                Text="Product Name:" />
+              MinWidth="80"
+              Margin="0,0,3,0"
+              VerticalAlignment="Center"
+              FontWeight="SemiBold"
+              Text="Type: " />
                             <TextBox
-                                MinWidth="120"
-                                HorizontalAlignment="Stretch"
-                                BorderBrush="Gray" />
+              IsReadOnly="True"
+              x:Name="txtType"
+              Width="96"
+              Height="25"
+              BorderBrush="Black"
+              BorderThickness="1"
+              Text="{Binding Type}" />
                         </StackPanel>
                         <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                             <TextBlock
-                                MinWidth="80"
-                                Margin="0,0,20,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                FontWeight="SemiBold"
-                                Text="Price: " />
-                            <ComboBox
-                                MinWidth="120"
-                                HorizontalAlignment="Stretch"
-                                BorderBrush="Gray" />
+              MinWidth="80"
+              Margin="0,0,20,0"
+              VerticalAlignment="Center"
+              FontWeight="SemiBold"
+              Text="Product Name:" />
+                            <TextBox
+              IsReadOnly="True"
+              x:Name="txtProductName"
+              MinWidth="120"
+              HorizontalAlignment="Stretch"
+              BorderBrush="Gray"
+              Text="{Binding ProductName}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                            <TextBlock
+              MinWidth="80"
+              Margin="0,0,20,0"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center"
+              FontWeight="SemiBold"
+              Text="Price: " />
+                            <TextBox
+              IsReadOnly="True"
+              x:Name="txtPrice"
+              MinWidth="120"
+              HorizontalAlignment="Stretch"
+              BorderBrush="Gray"
+              Text="{Binding Price}" />
                         </StackPanel>
                     </StackPanel>
 
@@ -184,11 +184,14 @@
                                 VerticalAlignment="Center"
                                 FontWeight="SemiBold"
                                 Text="Product ID:" />
-                            <ComboBox
+                            <TextBox
+                                IsReadOnly="True"
                                 Width="96"
                                 Height="25"
                                 BorderBrush="Black"
-                                BorderThickness="1" />
+                                BorderThickness="1" 
+                                 Text="{Binding Id}"
+                                />
                         </StackPanel>
                         <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                             <TextBlock
@@ -197,8 +200,9 @@
                                 VerticalAlignment="Center"
                                 FontWeight="SemiBold"
                                 Text="Quantity: "
-                                Name="txtQuantity"/>
+                                />
                             <TextBox
+                                x:Name ="txtQuantity"
                                 Width="80"
                                 Height="25"
                                 MinWidth="80"
@@ -207,7 +211,7 @@
                                 HorizontalContentAlignment="Right"
                                 VerticalContentAlignment="Center"
                                 BorderBrush="Gray"
-                                BorderThickness="1" />
+                                BorderThickness="1"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -313,14 +317,6 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Margin="20" Grid.Row="2">
-                <Button
-                    Width="180"
-                    Height="40"
-                    Margin="0,10,0,0"
-                    Background="{StaticResource PrimaryBrush}"
-                    Click="Receipt_Click"
-                    Content="RECEIPT"
-                    Foreground="White" />
                 <Button
                     Width="180"
                     Height="40"

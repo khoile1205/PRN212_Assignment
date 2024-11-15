@@ -80,5 +80,10 @@ namespace Service.Services
 
             return true;
         }
+
+        public void logOut()
+        {
+            _currentUser = null;
+        }
     }
 }

@@ -15,6 +15,9 @@ namespace DataAccess.UnitOfWork
         IRepository<UserOrder> UserOrders { get; }
         IRepository<Order> Orders { get; }
         IRepository<Product> Products { get; }
+        IRepository<OrderProduct> OrderProducts { get; }
+
+
         void Save();
     }
 }

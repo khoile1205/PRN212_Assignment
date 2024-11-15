@@ -37,6 +37,7 @@ namespace Service.DI
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderProductService, OrderProductService>();
 
         }
     }

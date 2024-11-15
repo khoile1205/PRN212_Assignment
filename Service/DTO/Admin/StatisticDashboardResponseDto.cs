@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace Service.DTO.Admin
         public int TotalDailyOrders { get; set; }
         public decimal TotalDailyIncome { get; set; }
         public decimal TotalIncome { get; set; }
+        public  IEnumerable<Order> ListDailyOrders { get; set; }
     }
 }
